@@ -16,12 +16,21 @@
         <tr>
             <td>{{stock.s_name}}</td>
             <td>{{stock.s_count}}{{stock.s_unit}}</td>
-            <td>{{stock.incoming_at}}</td>
-            <td>{{stock.expire_at}}</td>
-            <td>{{stock.status}}</td>
+            <td>{{stock.s_incoming_at}}</td>
+            <td>{{stock.s_expire_at}}</td>
+            {% if stock.s_status == True %}
+                <td>재고 있음</td>
+            {% else %}
+                <td>소진</td>
+            {% endif %}
             <td>
-                <input type="button" class="btn btn-info" value="수정">
-                <input type="button" class="btn btn-danger" value="삭제">
+                <form name="update" method="GET" action="{% url 'main:updateItem' stock.pk %}" style="display : inline;">
+                    <input type="submit" class="btn btn-info" value="수정">
+                </form>
+                <form name="delete" method="POST" style="display : inline;">
+                    {% csrf_token %}
+                    <input type="button" class="btn btn-danger" value="삭제" onclick="isDelete({{stock.pk}});">
+                </form>
             </td>
         </tr>
         {% endfor %}

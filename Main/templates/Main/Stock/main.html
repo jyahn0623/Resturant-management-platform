@@ -1,10 +1,14 @@
 {% extends 'Main/Based/main.html' %}
-
+{% load static %}
 {% block title %}유통·재고{% endblock %}
 {% block sidebar %}
    {% include 'Main/Stock/Stock_sidebar.html' %}
 {% endblock %}
 
+{% block script %}
+    <script src="{% static 'Main/js/Stock.js' %}"></script>
+{% endblock%}
+
 {% block content %}
-    큰 실수를 범한.
+    안주영에 의한.
 {% endblock %}

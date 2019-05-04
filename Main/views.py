@@ -1,5 +1,7 @@
-from django.shortcuts import render, HttpResponse, Http404, render_to_response
+from django.shortcuts import render, HttpResponse, Http404, render_to_response, redirect
 from .models import Order, Stock
+from django.forms.models import modelform_factory
+from django.views.generic.edit import DeleteView, UpdateView
 
 # -------------- 재고 부분 ------------------#
 # Main
@@ -36,11 +38,30 @@ def addItems(request):
             s_expire_at = s_expire_at
         )
         print("재고 생성 완료")
-        return render_to_response('Main/Stock/Stock_read_items.html', {
-            'Stocks' : Stock.objects.all()
+        return redirect('/Stock/Inquiry/', {
+            'Stocks' : Stock.objects.all(),
         })
 
     return render(request, 'Main/Stock/Stock_add_item.html')
+
+# 재고 수정
+class StockUpdate(UpdateView):
+    model = Stock
+    fields = ['s_name', 's_count', 's_unit', 's_incoming_at', 's_caution_num',
+                's_expire_at']
+    success_url = '/Stock/Inquiry/'
+    template_name = 'Main/Stock/Stock_update_item.html'
+    
+    def get_initial(self):
+        initial = super(StockUpdate, self).get_initial()
+        return initial
+
+# 재고 삭제
+class StockDelete(DeleteView):
+    model = Stock
+    success_url = '/Stock/Inquiry/'
+    template_name = 'Main/Stock/Stock_read_items.html'
+    print("삭제 완료")
 
 # -------------- 발주 부분 ------------------#
 # 발주 등록
@@ -72,3 +93,18 @@ def readOrders(request):
     return render(request, 'Main/Order/Order_read_items.html',{
         'Orders' : Orders,
     })
+
+class OrderUpdate(UpdateView):
+    model = Order
+    success_url = "/Order/Inquiry/"
+    template_name = "Main/Order/Order_update_item.html"
+    fields = '__all__'
+
+    def get_initial(self):
+        return super().get_initial()
+
+# 발주 삭제
+class OrderDelete(DeleteView):
+    model = Order
+    success_url = "/Order/Inquiry/"
+    template_name = "Main/Order/Order_read_items.html"
