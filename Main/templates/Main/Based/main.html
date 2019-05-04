@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
@@ -25,9 +28,9 @@
       }
     </style>
     <!-- Custom styles for this template -->
-  </head>
-  <body class="bg-light">
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <body>
+  
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand mr-auto mr-lg-0" href="#">식당 관리 시스템</a>
   <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
     <span class="navbar-toggler-icon"></span>
@@ -39,7 +42,7 @@
         <a class="nav-link" href="#">인사 관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">재고·유통 관리</a>
+        <a class="nav-link" href="{% url 'main:stock' %}">재고·유통 관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">판매 관리</a>
@@ -63,11 +66,22 @@
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>
-</nav>
+  </nav>
 
+  <div class="container-fluid">
+    <dic class="row">
+    <div class="col-md-2">
+      {% block sidebar %}{% endblock %}
+    </div>
+    <div class="col-md-10">
+      {% block content %}{% endblock %}
+    </div>
+    </div>
+  </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous">
-</script>
-</body></html>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script>
+      
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends 'Main/Stock/main.html' %}
+
+{% block content %}
+    <table class="table table-bordered text-center">
+    <thead class="thead thead-light">
+        <th>품명</th>
+        <th>수량</th>
+        <th>주문일자</th>
+        <th>상태</th>
+        <th>삭제 및 수정</th>
+    </thead>
+    <tbody>
+    {% if Orders %}
+        {% for order in Orders %}
+        <tr>
+            <td>{{order.o_name}}</td>
+            <td>{{order.o_count}}{{order.o_unit}}</td>
+            <td>{{order.o_order_at}}</td>
+            <td>{{o_status}}</td>
+            <td>
+                <input type="button" class="btn btn-info" value="수정">
+                <input type="button" class="btn btn-danger" value="삭제">
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <td colspan="5">발주 항목이 없습니다.</td>
+    {% endif %}
+    </tbody>
+    </table>
+{% endblock %}

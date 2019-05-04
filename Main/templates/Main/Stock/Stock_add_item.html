@@ -1,0 +1,35 @@
+{% extends 'Main/Stock/main.html' %}
+
+{% block content %}
+    <form action="{% url 'main:addItems' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>재고명</label>
+                <input type="text" name="name" class="form-control" placeholder="재고 관리를 원하는 재고 이름">
+            </div>
+            <div class='form-group col-md-5'>
+                <label>잔량</label>
+                <input type="number" name="number" class="form-control" placeholder="남아 있는 재고의 수량을 입력해 주세요..">
+            </div>
+            <div class="form-group col-md-1">
+                <label>단위</label>
+                <input type="text" name="unit" class="form-control" placeholder="단위">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>경고 수량</label>
+            <input type="number" name="alter_number" class="form-control" placeholder="경고 수량은 입력한 값 이하로 재고량이 떨어지면 알람을 해 주는 기능입니다.">
+        </div>
+        <div class="form-group">
+            <label>반입일자</label>
+            <input class="form-control" type="date" name="date" placeholder="반입날짜">
+        </div>
+        <div class="form-group">
+            <label>유통기한</label>
+            <input class="form-control" type="date" name="expire_date" placeholder="유통기한">
+        </div>
+
+        <input class="btn btn-info" type="submit" value="등록">
+    </form>
+{% endblock %}

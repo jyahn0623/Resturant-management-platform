@@ -1,0 +1,33 @@
+{% extends 'Main/Stock/main.html' %}
+
+{% block content %}
+    <table class="table table-bordered text-center">
+    <thead class="thead thead-light">
+        <th>품명</th>
+        <th>재고량</th>
+        <th>반입일자</th>
+        <th>유통기한</th>
+        <th>상태</th>
+        <th>삭제 및 수정</th>
+    </thead>
+    <tbody>
+    {% if Stocks %}
+        {% for stock in Stocks %}
+        <tr>
+            <td>{{stock.s_name}}</td>
+            <td>{{stock.s_count}}{{stock.s_unit}}</td>
+            <td>{{stock.incoming_at}}</td>
+            <td>{{stock.expire_at}}</td>
+            <td>{{stock.status}}</td>
+            <td>
+                <input type="button" class="btn btn-info" value="수정">
+                <input type="button" class="btn btn-danger" value="삭제">
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <td colspan="7">등록된 재고가 없습니다.</td>
+    {% endif %}
+    </tbody>
+    </table>
+{% endblock %}
