@@ -23,6 +23,7 @@
                 <td>미반입</td>
             {% endif%}
             <td>
+                <input class="btn btn-success" type="button" value="반입처리" onclick="IncomingOrder({{order.pk}})">
                 <form action="{% url 'main:updateOrder' order.pk %}" method="GET" style="display : inline;">
                     <input type="submit" class="btn btn-info" value="수정">
                 </form>
@@ -38,4 +39,21 @@
     {% endif %}
     </tbody>
     </table>
+
+    <script>
+    function IncomingOrder(pk){
+    var request_url = "/Order/"+pk+"/Incoming/";
+        $.ajax({
+            type : 'POST',
+            url : request_url,
+            data : {
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            success : function(res){
+                alert(res.message);
+                window.location.reload();
+            }
+        });
+    }   
+    </script>
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, Http404, render_to_response, 
 from .models import Order, Stock
 from django.forms.models import modelform_factory
 from django.views.generic.edit import DeleteView, UpdateView
-
+import json
 # -------------- 재고 부분 ------------------#
 # Main
 def stockMain(request):
@@ -56,12 +56,32 @@ class StockUpdate(UpdateView):
         initial = super(StockUpdate, self).get_initial()
         return initial
 
+# 재고 소비 및 충당
+def ajaxStockUpdate(request, pk):
+    message = ""
+    m_count = request.POST.get("change_value")
+    type_ = request.POST.get("type")
+    data = dict()
+    try:
+        stock = Stock.objects.get(id=pk)
+        if type_ == '0':
+            stock.s_count =stock.s_count+int(m_count)
+        else:
+            stock.s_count =stock.s_count-int(m_count)
+        stock.save()
+        message = "성공적으로 변경되었습니다."
+        data['count'] = str(stock.s_count) + stock.s_unit
+    except Exception as e:
+        message = "처리 도중 오류가 생겼습니다."
+
+    data['message'] = message
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
 # 재고 삭제
 class StockDelete(DeleteView):
     model = Stock
     success_url = '/Stock/Inquiry/'
     template_name = 'Main/Stock/Stock_read_items.html'
-    print("삭제 완료")
 
 # -------------- 발주 부분 ------------------#
 # 발주 등록
@@ -78,7 +98,7 @@ def addOrders(request):
             o_unit = o_unit
         )
         print("발주 생성 완료")
-        return render_to_response('Main/Order/Order_read_items.html', {
+        return redirect('/Order/Inquiry/', {
             'Orders' : Order.objects.all()
         })
     return render(request, 'Main/Order/Order_add_item.html')
@@ -102,6 +122,27 @@ class OrderUpdate(UpdateView):
 
     def get_initial(self):
         return super().get_initial()
+
+# 발주 반입처리
+def ajaxIncomingOrder(request, pk):
+    if request.method == 'POST':
+        order = Order.objects.get(pk=pk)
+        order.o_status = True
+        order.save()
+
+        # 반입 처리가 된다면 재고에 추가
+        Stock.objects.create(
+            s_name=order.o_name,
+            s_count=order.o_count,
+            s_unit=order.o_unit,
+        )
+        
+        datas = {
+            'message' : '성공적으로 처리 되었습니다.',
+        }
+        return HttpResponse(json.dumps(datas), content_type="application/json")
+
+    return HttpResponse("실패")
 
 # 발주 삭제
 class OrderDelete(DeleteView):

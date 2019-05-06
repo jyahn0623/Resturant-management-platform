@@ -8,6 +8,7 @@
         <th>반입일자</th>
         <th>유통기한</th>
         <th>상태</th>
+        <th style="width : 10%;">수량 조절<i id="tooltip" class="glyphicon glyphicon-info-sign" style="color : blue" title="기존 재고량에 재고를 쉽게 더하거나 뺄 수 있습니다."></i></th>
         <th>삭제 및 수정</th>
     </thead>
     <tbody>
@@ -15,7 +16,7 @@
         {% for stock in Stocks %}
         <tr>
             <td>{{stock.s_name}}</td>
-            <td>{{stock.s_count}}{{stock.s_unit}}</td>
+            <td id="count{{stock.pk}}">{{stock.s_count}}{{stock.s_unit}}</td>
             <td>{{stock.s_incoming_at}}</td>
             <td>{{stock.s_expire_at}}</td>
             {% if stock.s_status == True %}
@@ -23,6 +24,11 @@
             {% else %}
                 <td>소진</td>
             {% endif %}
+            <td>
+                <input id="value{{stock.pk}}" type="number" class="form-control" placeholder="변경 값">
+                <i class="glyphicon glyphicon-plus-sign" style="font-size : 20px;" onclick="modifyValue(0, {{stock.s_count}}, {{stock.pk}})"></i>
+                <i class="glyphicon glyphicon-minus-sign" style="font-size : 20px;" onclick="modifyValue(1, {{stock.s_count}}, {{stock.pk}})"></i>
+            </td>
             <td>
                 <form name="update" method="GET" action="{% url 'main:updateItem' stock.pk %}" style="display : inline;">
                     <input type="submit" class="btn btn-info" value="수정">
@@ -35,8 +41,57 @@
         </tr>
         {% endfor %}
     {% else %}
-        <td colspan="7">등록된 재고가 없습니다.</td>
+        <td colspan="8">등록된 재고가 없습니다.</td>
     {% endif %}
     </tbody>
     </table>
+    
+
+    <script>
+        // 수량 조절
+        // type = 0 -> 추가
+        // type = 1 -> 삭제
+        function modifyValue(type, pre_val, pk){
+            var val = Number($("#value" + pk).val());
+            var request_url = "/Stock/"+pk+"/Update/";
+            if (val > pre_val && type == 1){
+                alert("기존 재고량보다 큰 값을 소비할 수 없습니다.");
+                return 0;
+            }else if (val == ""){
+                alert("값을 입력해 주세요.");
+                return 0;
+            }
+
+            if (type==0){
+                 $.ajax({
+                    type : 'POST',
+                    url : request_url,
+                    data : {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'change_value' : val,
+                        'type' : '0'
+                    },
+                    success : function(res){
+                        alert(res.message);
+                        $("td#count" + pk).html(res.count + "");
+                    }
+                 });
+            }else if(type==1){
+                 $.ajax({
+                    type : 'POST',
+                    url : request_url,
+                    data : {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'change_value' : val,
+                        'type' : '1'
+                    },
+                    success : function(res){
+                        alert(res.message);
+                        $("td#count" + pk).html(res.count + "");
+                        location.reload();
+                    }
+                 });
+            }
+        }
+    </script>
 {% endblock %}

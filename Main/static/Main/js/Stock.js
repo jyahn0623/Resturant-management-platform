@@ -8,6 +8,10 @@ function isDelete(num){
     }
 }
 
+$(document).ready(function(){
+    $("#tooltip").tooltip();
+});
+
 // Order_read_items.html
 function o_isDelete(num)
 {
@@ -18,3 +22,4 @@ function o_isDelete(num)
         $("form[name='delete']").submit();
     }
 }
+
