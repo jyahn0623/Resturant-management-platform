@@ -65,10 +65,16 @@ def ajaxStockUpdate(request, pk):
     try:
         stock = Stock.objects.get(id=pk)
         if type_ == '0':
-            stock.s_count =stock.s_count+int(m_count)
+            stock.s_count =stock.s_count+float(m_count)
         else:
-            stock.s_count =stock.s_count-int(m_count)
-        stock.save()
+            stock.s_count =stock.s_count-float(m_count)
+
+        if not stock.stock_checking():
+            stock.s_status = False
+        else:
+            stock.s_status = True
+
+        stock.save(update_fields=['s_count', 's_status'])
         message = "성공적으로 변경되었습니다."
         data['count'] = str(stock.s_count) + stock.s_unit
     except Exception as e:
@@ -174,3 +180,19 @@ def sell_registerMenu(request):
         Menu.objects.create(m_name=m_name, m_price=m_price, m_explain=m_explain, m_pic=m_pic)
         return redirect('/Sell/Admin/')
     return render(request, 'Main/Sell/sell_menu_register.html')
+
+class SellDelete(DeleteView):
+    model = Menu
+    success_url = "/Sell/Admin/"
+
+class SellUpdate(UpdateView):
+    model = Menu
+    success_url = "/Sell/Admin/"
+    template_name = "Main/Sell/sell_menu_update.html"
+    fields = "__all__"
+
+    def get_initial(self):
+        initial = super(UpdateView, self).get_initial()
+        return initial
+
+

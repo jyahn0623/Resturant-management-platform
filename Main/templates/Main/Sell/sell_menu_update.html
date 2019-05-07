@@ -1,0 +1,8 @@
+{% extends 'Main/Sell/main.html' %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        {{form.as_p}}   
+        <input class="btn btn-info" type="submit" value="수정">
+    </form>
+{% endblock %}

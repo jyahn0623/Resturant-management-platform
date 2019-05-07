@@ -1,8 +1,9 @@
 {% extends 'Main/Stock/main.html' %}
 {% block content %}
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="수정">
+    <input class="btn btn-info" type="submit" value="수정">
 </form>
 {% endblock %}

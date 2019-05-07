@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 from . import views
-from Main.views import StockDelete, OrderDelete, StockUpdate, OrderUpdate
+from Main.views import StockDelete, OrderDelete, StockUpdate, OrderUpdate, SellDelete, SellUpdate
 
 app_name = 'main'
 urlpatterns = [
@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('Sell/', views.sell, name="sell"),
     path('Sell/Admin/', views.sellAdmin, name="sellAdmin"),
-    path('Sell/Menu/Register/', views.sell_registerMenu, name="sell_registerMenu")
+    path('Sell/Menu/Register/', views.sell_registerMenu, name="sell_registerMenu"),
+    path('Sell/<int:pk>/Delete/', SellDelete.as_view(), name="sell_delete"),
+    path('Sell/<int:pk>/Update/', SellUpdate.as_view(), name="sell_update")
 ]
 
