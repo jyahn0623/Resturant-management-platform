@@ -1,0 +1,23 @@
+{% extends 'Main/Sell/main.html' %}
+{% block content %}
+<form action="{% url 'main:sell_registerMenu' %}" method="POST" enctype="multipart/form-data" novalidation>
+{% csrf_token %}
+    <div class="form-group">
+        <label>메뉴 이름</label>
+        <input name="name" type="text" class="form-control" placeholder="메뉴 이름을 입력해 주세요.">
+    </div>
+    <div class="form-group">
+        <label>가격</label>
+        <input name="price" type="number" class="form-control" placeholder="메뉴 가격을 입력해 주세요.">
+    </div>
+    <div class="form-group">
+        <label>설명</label>
+        <input name="explain" type="text" class="form-control" placeholder="메뉴 설명을 입력해 주세요.">
+    </div>
+    <div class="form-group">
+        <label>사진 첨부</label>
+        <input name="image" type="file" class="form-control" placeholder="메뉴 사진을 첨부해 주세요.">
+    </div>
+    <input type="submit" class='btn btn-info' value="등록">
+</form>
+{% endblock %}

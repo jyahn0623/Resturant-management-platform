@@ -1,0 +1,27 @@
+{% extends 'Main/Sell/main.html' %}
+{% load static %}
+{% block content %}
+<button type="button" class="btn btn-info" onclick="window.location='/Sell/Menu/Register/'">메뉴 등록</button>
+<table class="table table-bordered table-hover text-center">
+    <thead class="thead thead-light"> 
+        <th>메뉴명</th>
+        <th>가격</th>
+        <th>설명</th>
+        <th>사진</th>
+    </thead>
+    <tbody>
+    {% for menu in menus %}
+        <tr>    
+            <td>{{menu.m_name}}</td>
+            <td>{{menu.m_price}}</td>
+            <td>{{menu.m_explain}}</td>
+            {% if menu.m_pic %}
+                <td><img src={{menu.m_pic.url}} width="150px" height="150px"></td>  
+            {% else %}
+                <td>사진 등록이 필요합니다.</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}  

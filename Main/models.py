@@ -17,12 +17,12 @@ class Stock(models.Model):
             changed = ""
             for field in stock._meta.fields:
                 if getattr(stock, field.name, None) != getattr(self, field.name, None):
-                    changed += '{0}의 값이 {1}->{2}로 변경'.format(field.name, getattr(stock, field.name, None), getattr(self, field.name, None))
-            Stocklog(sl_name=self, sl_log=changed).save()
+                    changed += '{0}의 {1}의 값이 {2}->{3}로 변경  '.format(self.s_name, field.verbose_name, getattr(stock, field.name, None), getattr(self, field.name, None))
+            Stocklog(sl_log=changed).save()
             super(Stock, self).save(*args, **kwargs)
         except Stock.DoesNotExist:
             super(Stock, self).save(*args, **kwargs)
-            Stocklog(sl_name=self, sl_log="New Instance").save()
+            Stocklog(sl_log="New Instance").save()
         
 class Order(models.Model):
     o_name = models.CharField(max_length=30, verbose_name="품명")
@@ -32,5 +32,20 @@ class Order(models.Model):
     o_status = models.BooleanField(verbose_name='상태', default=False)
 
 class Stocklog(models.Model):
-    sl_name = models.ForeignKey(Stock, on_delete=models.CASCADE, verbose_name="재고명")
     sl_log = models.CharField(max_length=100, verbose_name="변경사항")
+
+
+
+def directory_url(instance, filename):
+    return '{0}/{1}'.format("청주대학교 식당", filename) 
+
+class Menu(models.Model):
+    m_name = models.CharField(max_length=20, verbose_name="메뉴 이름")
+    m_price = models.PositiveIntegerField(verbose_name="가격")
+    m_explain = models.CharField(max_length=100, verbose_name="설명")
+    m_pic = models.ImageField(verbose_name="사진", null=True, blank=True, upload_to=directory_url)
+
+    def __str__(self):
+        return self.m_name
+    
+    

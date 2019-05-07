@@ -17,8 +17,8 @@
         <tr>
             <td>{{stock.s_name}}</td>
             <td id="count{{stock.pk}}">{{stock.s_count}}{{stock.s_unit}}</td>
-            <td>{{stock.s_incoming_at}}</td>
-            <td>{{stock.s_expire_at}}</td>
+            <td>{{stock.s_incoming_at|default_if_none:"설정이 필요합니다."}}</td>
+            <td>{{stock.s_expire_at|default_if_none:"설정이 필요합니다."}}</td>
             {% if stock.s_status == True %}
                 <td>재고 있음</td>
             {% else %}
@@ -74,6 +74,7 @@
                     success : function(res){
                         alert(res.message);
                         $("td#count" + pk).html(res.count + "");
+                        location.reload();
                     }
                  });
             }else if(type==1){

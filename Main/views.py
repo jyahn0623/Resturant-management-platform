@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, Http404, render_to_response, redirect
-from .models import Order, Stock
+from .models import Order, Stock, Stocklog, Menu
 from django.forms.models import modelform_factory
 from django.views.generic.edit import DeleteView, UpdateView
 import json
@@ -83,6 +83,12 @@ class StockDelete(DeleteView):
     success_url = '/Stock/Inquiry/'
     template_name = 'Main/Stock/Stock_read_items.html'
 
+# 이력 조회
+def getStockHistory(request):
+    return render(request, 'Main/Stock/stock_read_history.html', {
+        'historys' : Stocklog.objects.all(),
+    })
+
 # -------------- 발주 부분 ------------------#
 # 발주 등록
 def addOrders(request):
@@ -149,3 +155,22 @@ class OrderDelete(DeleteView):
     model = Order
     success_url = "/Order/Inquiry/"
     template_name = "Main/Order/Order_read_items.html"
+
+##### 판매 관리 #####
+def sell(request):
+    return render(request, 'Main/Sell/main.html', {})
+
+def sellAdmin(request):
+    return render(request, 'Main/Sell/sell_menu_admin.html', {'menus' : Menu.objects.all() })
+
+def sell_registerMenu(request):
+    if request.method == 'POST':
+        print(request.POST.keys(), request.POST.values())
+        m_name = request.POST.get('name')
+        m_price = request.POST.get('price')
+        m_explain = request.POST.get('explain')
+        m_pic = request.FILES.get('image')
+
+        Menu.objects.create(m_name=m_name, m_price=m_price, m_explain=m_explain, m_pic=m_pic)
+        return redirect('/Sell/Admin/')
+    return render(request, 'Main/Sell/sell_menu_register.html')

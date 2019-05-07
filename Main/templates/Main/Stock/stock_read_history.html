@@ -1,0 +1,16 @@
+{% extends 'Main/Stock/main.html' %}
+
+{% block content %}
+<table class="table table-hover table-bordered">
+<thead class="thead thead-light">
+    <th>이력 내용</th>
+</thead>
+<tbody>
+{% for history in historys %}
+    <tr>
+        <td>{{history.sl_log}}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
