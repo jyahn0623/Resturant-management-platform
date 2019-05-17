@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponse, Http404, render_to_response, redirect
-from .models import Order, Stock, Stocklog, Menu
+from .models import *
 from django.forms.models import modelform_factory
 from django.views.generic.edit import DeleteView, UpdateView
 import json
+
 # -------------- 재고 부분 ------------------#
 # Main
 def stockMain(request):
@@ -196,3 +197,7 @@ class SellUpdate(UpdateView):
         return initial
 
 
+##### 주문 현황 ### 향후 이식
+def orderState(request):
+    order = Order_sheet.objects.all()
+    return render(request, 'Main/Order_State/index.html', {'orders' : order})

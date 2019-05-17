@@ -21,6 +21,8 @@ urlpatterns = [
     path('Sell/Admin/', views.sellAdmin, name="sellAdmin"),
     path('Sell/Menu/Register/', views.sell_registerMenu, name="sell_registerMenu"),
     path('Sell/<int:pk>/Delete/', SellDelete.as_view(), name="sell_delete"),
-    path('Sell/<int:pk>/Update/', SellUpdate.as_view(), name="sell_update")
+    path('Sell/<int:pk>/Update/', SellUpdate.as_view(), name="sell_update"),
+
+    path('Order/State/', views.orderState, name='orderState')
 ]
 

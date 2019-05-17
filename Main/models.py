@@ -61,7 +61,18 @@ class Menu(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse("main:sell_delete", kwargs={"pk": self.pk})
-    
+
+class Table_order(models.Model):
+    to_menu = models.ForeignKey("Main.Menu", verbose_name="메뉴", on_delete=models.CASCADE)
+    to_order_date = models.DateTimeField(verbose_name="주문 시간", auto_now=True)
+    to_count = models.PositiveIntegerField(verbose_name="개수")
+    to_status = models.CharField(verbose_name="주문 상태", max_length=10)
+
+class Order_sheet(models.Model):
+    os_table_no = models.PositiveIntegerField(verbose_name="테이블 번호")
+    os_amount = models.PositiveIntegerField(verbose_name="총액")
+    os_menu = models.ForeignKey("Main.Table_order", verbose_name="주문서", on_delete=models.CASCADE)
+
 
  
     

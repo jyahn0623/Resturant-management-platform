@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+# Channels
+ASGI_APPLICATION = 'RMS.routing.application'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -31,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'Order',
     'Main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -75,9 +79,13 @@ WSGI_APPLICATION = 'RMS.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'default' : {
+        'ENGINE' : 'django.db.backends.mysql',
+        'NAME' : 'RMS',
+        'USER' : 'root',
+        'PASSWORD' : 'nf1yfa23',
+        'HOST' : 'localhost',
+        'PORT' : '3306'
     }
 }
 

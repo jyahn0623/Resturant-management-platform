@@ -1,0 +1,81 @@
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>주문서</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+                {% for menu in menus %}
+                    <div id="{{menu.id}}" class="m-2 col-md-3 card" style="width: 18rem;" onclick="selectMenu({{menu.id}}, {{menu.m_price}}, '{{menu.m_name}}');">
+                    {% if menu.m_pic %}
+                        <img class="card-img-top" src={{menu.m_pic.url}} alt="사진 등록이 필요합니다.">
+                    {% else %}
+                        <img class="card-img-top" alt="사진 등록이 필요합니다.">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{menu.m_name}} {{menu.m_price}}원</h5>
+                        <p class="card-text">{{menu.m_explain}}</p>
+                    </div>
+                    </div>
+                {% endfor %}
+        </div>
+    
+        <div class="row" style="position : static; bottom : 0px;">
+            <div class="receipt">
+                <div class="row">
+                    <div class="receipt_money col-md-6"></div>
+                    <div class="menu col-md-6">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-info" onclick="ordering();">주문하기</button>
+
+        </div>
+    </div>
+    <script>
+        var amount = 0;
+        var datas = {
+            'menu' : {},
+        };
+        function selectMenu(menu_pk, price, name)
+        {  
+            amount += price;
+            console.log(menu_pk + " " + price + " " + name);
+            console.log(name in datas);
+            if (menu_pk in datas['menu'] == false){
+                datas['menu'][menu_pk] = 1;
+            }else{
+                datas['menu'][menu_pk] += 1;
+            }
+
+            datas['amount'] = amount;
+            
+            $("div.receipt .receipt_money").append("<p>" +name + " " + price + "</p>");
+            $("div.receipt .menu").html(amount +"원");
+        }
+
+        function ordering()
+        {
+            alert(Object.entries(datas));
+            $.ajax({
+                type : 'POST',
+                url : "Do/Order/",
+                data : {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'datas' : JSON.stringify(datas)
+                },
+                success : function(res)
+                {
+                    //alert(res.name);
+                }, 
+            });
+        }
+    </script>
+</body>
+</html>
