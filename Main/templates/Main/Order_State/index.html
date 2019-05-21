@@ -7,6 +7,7 @@
         <th>주문 개수</th>
         <th>주문 상태</th>
         <th>주문 시간</th>
+        <th>처리</th>
     </thead>
     <tbody>
         {% for order in orders %}
@@ -14,8 +15,12 @@
             <td>{{order.os_table_no}}</td>
             <td>{{order.os_menu.to_menu}}</td>
             <td>{{order.os_menu.to_count}}</td>
-            <td>{{order.os_menu.to_status}}</td>
-            <td>{{order.os_menu.to_order_date}}</td>
+            <td id="order{{order.pk}}">{{order.os_menu.to_status}}</td>
+            <td><span id="time{{order.pk}}">{{order.os_menu.to_order_date}}</span> <span id="pasttime{{order.pk}}"></span></td>
+            <td>
+                <button class="btn btn-success" onclick="doneOrder({{order.pk}})">주문완료 처리</button>
+                <button class="btn btn-danger" onclick="cancelOrder({{order.pk}})">주문취소 처리</button>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
@@ -28,5 +33,44 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    function doneOrder(pk)
+    {
+        var url = '/ajax/Order/' + pk + '/Done/';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : {
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            success : function(res)
+            {
+                changeStatus(pk, res.status);
+            }
+        });
+    }
+    function cancelOrder(pk)
+    {
+        var url = '/ajax/Order/' + pk + '/Cancel/';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : {
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            success : function(res)
+            {
+                changeStatus(pk, res.status);
+            }
+        });
+    }
+
+    function changeStatus(pk, status)
+    {
+        $("#order" + pk).html(status);
+    }
+
+
+</script>
 {% endblock %}
 

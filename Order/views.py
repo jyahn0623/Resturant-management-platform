@@ -21,7 +21,6 @@ class mainView(View):
 def doOrder(request):
     datas_to_json = json.loads(request.POST.get('datas', ''))
     # 프로토 타입에서는 table num를 1로 가정
-    print(datas_to_json)
     for menu in datas_to_json['menu']:
         orderd_menu = to.objects.create(
             to_menu=m_Menu.objects.get(pk=menu),

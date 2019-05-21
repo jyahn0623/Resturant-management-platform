@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, Http404, render_to_response, 
 from .models import *
 from django.forms.models import modelform_factory
 from django.views.generic.edit import DeleteView, UpdateView
+from django.views import View
 import json
 
 # -------------- 재고 부분 ------------------#
@@ -201,3 +202,24 @@ class SellUpdate(UpdateView):
 def orderState(request):
     order = Order_sheet.objects.all()
     return render(request, 'Main/Order_State/index.html', {'orders' : order})
+
+# 주문 완료 처리
+def orderDone(request, pk):
+    print(pk)
+    return HttpResponse('hello')
+
+class orderDone(View):
+    def post(self, request, *args, **kwargs):
+        order_pk = kwargs.get('pk')
+        obj = Table_order.objects.get(pk=order_pk)
+        obj.to_status = '완료'
+        obj.save(update_fields=['to_status', ])
+        return HttpResponse(json.dumps({'status' : '완료', }), content_type="json/application")
+
+class orderCancel(View):
+    def post(self, request, **kwargs):
+        order_pk = kwargs.get('pk')
+        obj = Table_order.objects.get(pk=order_pk)
+        obj.to_status = '취소'
+        obj.save(update_fields=['to_status', ])
+        return HttpResponse(json.dumps({'status' : '취소', }), content_type="json/application")
