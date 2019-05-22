@@ -1,0 +1,48 @@
+
+<table class='table table-hover'>
+    <thead>
+        <th>메뉴</th>
+        <th>개수</th>
+        <th>가격</th>
+    </thead>
+   
+    <tbody>
+     {% if table %}
+        {% for menu in table.menu_info %}
+            <tr>
+                <td>{{menu.to_menu}}</td>
+                <td>{{menu.to_count}}</td>
+                <td>{{menu.to_menu.m_price}}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <td>데이터가 없습니다.<td>
+    {% endif %}
+    </tbody>
+</table>
+<div>
+총액 : {{table.amount}}원
+</div>
+
+<button class="btn btn-primary" onclick="payment();">결제 완료</button>
+<button class="btn btn-primary">취소</button>
+
+<script>
+function payment()
+{
+    $.ajax({
+        url : "{% url 'counter:finishedPayment' %}",
+        type : "POST",
+        data : {
+            'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            'amount' : '{{table.amount}}',
+            'sheet_no' : '{{table.table_info.pk}}',
+
+        },
+        success : function(res)
+        {
+            alert(res.message);
+        }
+    })
+}
+</script>

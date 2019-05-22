@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'Counter',
     'Order',
     'Main.apps.MainConfig',
     'django.contrib.admin',
@@ -83,6 +84,14 @@ DATABASES = {
         'ENGINE' : 'django.db.backends.sqlite3',
         'NAME' : os.path.join(BASE_DIR, 'db.sqlite3')
     }
+    #'default' : {
+    #    'ENGINE' : 'django.db.backends.mysql',
+    #    'NAME' : 'RMS',
+    #    'USER' : 'root',
+    #    'PASSWORD' : 'nf1yfa23',
+    #    'HOST' : 'localhost',
+    #    'PORT' : '3306'
+    #}
 }
 
  
@@ -118,13 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'ko-kr'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 

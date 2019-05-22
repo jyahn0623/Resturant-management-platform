@@ -21,17 +21,17 @@ class mainView(View):
 def doOrder(request):
     datas_to_json = json.loads(request.POST.get('datas', ''))
     # 프로토 타입에서는 table num를 1로 가정
-    for menu in datas_to_json['menu']:
+    for menu in datas_to_json['menu']:   
+        order_sheet=os.objects.create(
+            os_table_no=1,
+            os_amount=0,
+            
+        )
         orderd_menu = to.objects.create(
             to_menu=m_Menu.objects.get(pk=menu),
             to_count=datas_to_json['menu'][menu],
-            to_status='주문'
-        )
-
-        os.objects.create(
-            os_table_no=1,
-            os_amount=0,
-            os_menu=orderd_menu
+            to_status='주문',
+            to_order_sheet=order_sheet
         )
          
     return HttpResponse(json.dumps({'name' : '안주영'}), content_type="application/json")

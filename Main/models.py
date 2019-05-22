@@ -62,18 +62,31 @@ class Menu(models.Model):
         from django.urls import reverse
         return reverse("main:sell_delete", kwargs={"pk": self.pk})
 
-class Table_order(models.Model):
-    to_menu = models.ForeignKey("Main.Menu", verbose_name="메뉴", on_delete=models.CASCADE)
-    to_order_date = models.DateTimeField(verbose_name="주문 시간", auto_now=True)
-    to_count = models.PositiveIntegerField(verbose_name="개수")
-    to_status = models.CharField(verbose_name="주문 상태", max_length=10)
-
 class Order_sheet(models.Model):
     os_table_no = models.PositiveIntegerField(verbose_name="테이블 번호")
     os_amount = models.PositiveIntegerField(verbose_name="총액")
-    os_menu = models.ForeignKey("Main.Table_order", verbose_name="주문서", on_delete=models.CASCADE)
+    os_order_date = models.DateTimeField(verbose_name="주문 시간", auto_now=True)
+    os_status = models.BooleanField(verbose_name='활성여부', default=True)
 
+    def inactivateOrdersheet(self):
+        if self.os_status == False:
+            return
+        self.os_status = False
+        self.save(update_fields=['os_status', ])
+        
+class Table_order(models.Model):
+    to_menu = models.ForeignKey("Main.Menu", verbose_name="메뉴", on_delete=models.CASCADE)
+    to_count = models.PositiveIntegerField(verbose_name="개수")
+    to_status = models.CharField(verbose_name="주문 상태", max_length=10)
+    to_order_sheet = models.ForeignKey("Main.Order_sheet", verbose_name="주문서", on_delete=models.CASCADE, null=True)
 
+    def save(self, *args, **kwargs):
+        print(getattr(self, 'to_status', None))
+        super(Table_order, self).save(*args, **kwargs)
  
-    
+class Profit(models.Model):
+    p_profit_date = models.DateTimeField(auto_now_add=True)
+    p_detail = models.CharField(max_length=100)
+    p_amount = models.IntegerField(default=0)
+    p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE)
     

@@ -200,14 +200,10 @@ class SellUpdate(UpdateView):
 
 ##### 주문 현황 ### 향후 이식
 def orderState(request):
-    order = Order_sheet.objects.all()
+    order = Table_order.objects.all()
     return render(request, 'Main/Order_State/index.html', {'orders' : order})
 
 # 주문 완료 처리
-def orderDone(request, pk):
-    print(pk)
-    return HttpResponse('hello')
-
 class orderDone(View):
     def post(self, request, *args, **kwargs):
         order_pk = kwargs.get('pk')
@@ -216,6 +212,7 @@ class orderDone(View):
         obj.save(update_fields=['to_status', ])
         return HttpResponse(json.dumps({'status' : '완료', }), content_type="json/application")
 
+# 주춘 취소 처리
 class orderCancel(View):
     def post(self, request, **kwargs):
         order_pk = kwargs.get('pk')

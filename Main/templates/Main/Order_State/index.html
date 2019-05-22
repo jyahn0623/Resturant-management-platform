@@ -12,11 +12,11 @@
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{order.os_table_no}}</td>
-            <td>{{order.os_menu.to_menu}}</td>
-            <td>{{order.os_menu.to_count}}</td>
-            <td id="order{{order.pk}}">{{order.os_menu.to_status}}</td>
-            <td><span id="time{{order.pk}}">{{order.os_menu.to_order_date}}</span> <span id="pasttime{{order.pk}}"></span></td>
+            <td>{{order.to_order_sheet.os_table_no}}</td>
+            <td>{{order.to_menu}}</td>
+            <td>{{order.to_count}}</td>
+            <td id="order{{order.pk}}">{{order.to_status}}</td>
+            <td><span id="time{{order.pk}}">{{order.to_order_sheet.os_order_date}}</span> <span id="pasttime{{order.pk}}"></span></td>
             <td>
                 <button class="btn btn-success" onclick="doneOrder({{order.pk}})">주문완료 처리</button>
                 <button class="btn btn-danger" onclick="cancelOrder({{order.pk}})">주문취소 처리</button>
@@ -25,11 +25,6 @@
     {% endfor %}
     </tbody>
 </table>
-
-<div>
-    <label>정산</label>
-    <button onclick="test();">1번 테이블</button>
-</div>
 {% endblock %}
 
 {% block script %}
