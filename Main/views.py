@@ -220,3 +220,10 @@ class orderCancel(View):
         obj.to_status = '취소'
         obj.save(update_fields=['to_status', ])
         return HttpResponse(json.dumps({'status' : '취소', }), content_type="json/application")
+
+
+#### 매출 관리 ####
+class ProfitMain(View):
+    def get(self, request, *args, **kwargs):
+        profits = Profit.objects.all()
+        return render(request, 'Main/Profit/main.html', {'profits' : profits, })

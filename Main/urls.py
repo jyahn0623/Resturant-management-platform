@@ -25,6 +25,9 @@ urlpatterns = [
 
     path('Order/State/', views.orderState, name='orderState'),
     path('ajax/Order/<pk>/Done/', orderDone.as_view(), name='orderDone'),
-    path('ajax/Order/<pk>/Cancel/', orderCancel.as_view(), name='orderCancel')
+    path('ajax/Order/<pk>/Cancel/', orderCancel.as_view(), name='orderCancel'),
+
+    # 매출 관리
+    path('Profit/', ProfitMain.as_view(), name="profit-main")
 ]
 

@@ -1,0 +1,25 @@
+{% extends 'Main/Based/main.html' %}
+
+{% block sidebar %}
+    {% include 'Main/Profit/Profit_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table>
+                    <thead>
+                        
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>    
+    </div>
+    {% for data in profits %}
+        {{data}}
+    {% endfor %}
+{% endblock %}

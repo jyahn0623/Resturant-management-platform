@@ -12,7 +12,7 @@ class OrderSheetInfo(View):
     def get(self, request, *args, **kwargs):
         datas = {}
         try:
-            os = Order_sheet.objects.get(pk=kwargs.get('id'), os_status=True)
+            os = Order_sheet.objects.get(os_table_no=kwargs.get('id'), os_status=True)
             to = Table_order.objects.filter(to_order_sheet=os)
             datas['table_info'] = os
             datas['menu_info'] = to
