@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+
 # Channels
 ASGI_APPLICATION = 'RMS.routing.application'
 
@@ -29,19 +30,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'Counter',
     'Order',
-    'Main.apps.MainConfig',
+    'Main',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'channels',
 ]
 
@@ -94,15 +94,6 @@ DATABASES = {
     #}
 }
 
- 
-    #'default' : {
-    #    'ENGINE' : 'django.db.backends.mysql',
-    #    'NAME' : 'RMS',
-    #    'USER' : 'root',
-    #    'PASSWORD' : 'nf1yfa23',
-    #    'HOST' : 'localhost',
-    #    'PORT' : '3306'
-    #}
    
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -127,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'ko-kr'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

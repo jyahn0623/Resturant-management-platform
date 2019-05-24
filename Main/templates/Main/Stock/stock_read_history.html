@@ -1,6 +1,8 @@
 {% extends 'Main/Stock/main.html' %}
 
 {% block content %}
+
+<div class="row">
 <table class="table table-hover table-bordered">
 <thead class="thead thead-light">
     <th>시간</th>
@@ -15,4 +17,63 @@
 {% endfor %}
 </tbody>
 </table>
+</div>
+<div class="row">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" onclick="Previous();">이전</a></li>
+        <li id='p1' class="page-item"><a id='p1' class="page-link" onclick="gotopage(this.id)"></a></li>
+        <li id='p2' class="page-item"><a id='p2' class="page-link" onclick="gotopage(this.id)"></a></li>
+        <li id='p3' class="page-item"><a id='p3' class="page-link" onclick="gotopage(this.id)"></a></li>
+        <li id='p4' class="page-item"><a id='p4' class="page-link" onclick="gotopage(this.id)"></a></li>
+        <li id='p5' class="page-item"><a id='p5' class="page-link" onclick="gotopage(this.id)"></a></li>
+        <li class="page-item"><a class="page-link" onclick="Next();">다음</a></li>
+    </ul>
+</div>
+
+<script>
+    var page = Number('{{page}}');
+    var page_start_point = Number('{{page_start_point}}');
+    var MAX_SIZE = Number("{{MAX_SIZE}}");
+    var PAGE_SIZE = Number("{{PAGE_SIZE}}");
+
+    
+
+    $(document).ready(function(){
+        var index = 1;
+        for(var i=Number(page_start_point); i<Number(page_start_point)+5; i++)
+        {   
+            $("a#p" + index).html(i+1);
+            $("li#p" + index++).attr("v", i);
+        }
+        $("li[v="+(page-1)+"]").addClass("active");
+        
+    })
+
+    function gotopage(id)
+    {
+        var clicked_page = $("a#" + id).html();
+        console.log(clicked_page);
+        var url = '/Stock/History/' + clicked_page;
+        window.location.href = url;
+    }
+
+    function Previous()
+    {
+        if(page_start_point-5<0){
+            return false;
+        }   
+        var url = '/Stock/History/' + page_start_point;
+        window.location.href = url;
+    }
+    
+    function Next()
+    {
+        if (page_start_point+PAGE_SIZE > MAX_SIZE){
+            return false;
+        }
+        var next_Index = page_start_point+PAGE_SIZE+1;
+        var url = '/Stock/History/' + next_Index;
+        window.location.href = url;
+    }
+</script>
 {% endblock %}

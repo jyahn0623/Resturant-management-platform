@@ -1,6 +1,7 @@
-{% extends 'Main/Based/main.html' %}
+{% extends 'Main/Order_State/main.html' %}
+
 {% block content %} 
-<table class="table table-hover table-bordered">
+<table class="table table-hover table-bordered">    
     <thead class="thead thead-light">
         <th>테이블 번호</th>
         <th>주문 메뉴</th>
@@ -29,6 +30,25 @@
 
 {% block script %}
 <script>
+    $(document).ready(function(){
+        
+    })
+    var ws = new WebSocket('ws://'+ location.host +'/Order/State/');
+    ws.onopen = function(e){
+        console.log(e);
+        ws.send('sex');
+    }
+    ws.onerror = function(e){
+        console.log(e);
+    }
+    ws.onclose = function(e){
+        console.log(e);
+    }
+    ws.onmessage = function(e){
+        console.log(e);
+    }
+
+
     function doneOrder(pk)
     {
         var url = '/ajax/Order/' + pk + '/Done/';
@@ -47,17 +67,19 @@
     function cancelOrder(pk)
     {
         var url = '/ajax/Order/' + pk + '/Cancel/';
-        $.ajax({
-            type : 'POST',
-            url : url,
-            data : {
-                'csrfmiddlewaretoken' : '{{ csrf_token }}',
-            },
-            success : function(res)
-            {
-                changeStatus(pk, res.status);
-            }
-        });
+        if (confirm("정말 취소하시겠습니까?")){
+            $.ajax({
+                type : 'POST',
+                url : url,
+                data : {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                },
+                success : function(res)
+                {
+                    changeStatus(pk, res.status);
+                }
+            });
+        }
     }
 
     function changeStatus(pk, status)

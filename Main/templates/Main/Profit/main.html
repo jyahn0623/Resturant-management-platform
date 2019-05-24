@@ -5,21 +5,74 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <table>
-                    <thead>
-                        
+                <div class="btn-group mb-2" role="group">
+                    <button class="btn btn-secondary" onclick="window.location.href='/Profit/'">전체 조회</button>
+                    <button class="btn btn-secondary" onclick="showPeriodDiv();">기간 조회</button>
+                </div>
+                  <div class="period-search mb-2">
+                    <form action="{% url 'main:profit-search' %}" method="POST">
+                    {% csrf_token %} 
+                        <input type="date" name="start-date">-
+                        <input type="date" name="end-date">
+                        <input type="submit" class="btn btn-primary" value="조회">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class='table table-hover table-bordered' id="profit-table">
+                    <thead class="thead thead-light">
+                        <th>일자</th>
+                        <th>내용</th>
+                        <th>액수(원)</th>
                     </thead>
                     <tbody>
-
+                    {% if profits %}
+                        {% for data in profits %}
+                        <tr>
+                            <td>{{data.p_profit_date}}</td>
+                            <td>{{data.p_detail}}</td>
+                            <td id="amount{{forloop.counter0}}">{{data.p_amount}}</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
+                    {% else %}
+                        <td colspan="3" class="text-center">수익 내역이 없습니다.</td>
+                    {% endif %}
                 </table>
             </div>
         </div>    
+        <div class="row">
+            <div class="col-md-12">
+                총계 <span id="amount"></span>
+            </div>
+        </div>
     </div>
-    {% for data in profits %}
-        {{data}}
-    {% endfor %}
+
+    <script>
+        $(document).ready(function(){
+            $("span#amount").html(getSumOfMoney());
+        });
+
+        function getSumOfMoney()
+        {
+            var sum = 0;
+            var table = $("#profit-table tbody tr");
+            Object.keys(table).forEach(function(i, item)
+            {
+                if ($.isNumeric(i)){
+                    sum += Number($("#amount" + i).html());
+                }
+            });
+            return sum;
+        }
+
+        function showPeriodDiv(){
+            $("div.period-search").toggle("fast");
+        }
+    </script>
 {% endblock %}

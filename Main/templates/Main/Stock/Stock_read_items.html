@@ -48,6 +48,19 @@
     
 
     <script>
+    function isDelete(num){
+    if(confirm("정말 삭제하시겠습니까?"))
+        {
+            var url = "/Stock/"+num+"/Delete/"
+            $("form[name='delete']").attr("action", url);
+            $("form[name='delete']").submit();
+        }
+    }
+
+    $(document).ready(function(){
+        $("#tooltip").tooltip();
+    });
+
         // 수량 조절
         // type = 0 -> 추가
         // type = 1 -> 삭제

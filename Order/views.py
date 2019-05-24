@@ -34,7 +34,7 @@ def doOrder(request):
             to_order_sheet=order_sheet
         )
          
-    return HttpResponse(json.dumps({'name' : '안주영'}), content_type="application/json")
+    return HttpResponse(json.dumps({'message' : '주문이 완료되었습니다.'}), content_type="application/json")
 
 
 class test2(View):

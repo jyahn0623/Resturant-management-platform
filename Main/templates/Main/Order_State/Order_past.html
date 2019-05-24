@@ -1,0 +1,25 @@
+{% extends 'Main/Order_State/main.html' %}
+
+{% block content %}
+    <table class="table table-hover table-bordered">    
+    <thead class="thead thead-light">
+        <th>테이블 번호</th>
+        <th>주문 메뉴</th>
+        <th>주문 개수</th>
+        <th>주문 상태</th>
+        <th>주문 시간</th>
+    </thead>
+    <tbody>
+        {% for data in datas %}
+            <tr>
+                <td>{{data.to_order_sheet.os_table_no}}</td>
+                <td>{{data.to_menu.m_name}}</td>
+                <td>{{data.to_count}}</td>
+                <td>{{data.to_status}}</td>
+                <td>{{data.to_order_sheet.os_order_date}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

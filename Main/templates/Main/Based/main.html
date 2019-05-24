@@ -42,10 +42,10 @@
         <a class="nav-link" href="#">인사 관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'main:stock' %}">재고·유통 관리</a>
+        <a class="nav-link" href="{% url 'main:readItems' %}">재고·유통 관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'main:sell' %}">판매 관리</a>
+        <a class="nav-link" href="{% url 'main:sellAdmin' %}">판매 관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'main:profit-main' %}">매출 관리</a>
@@ -64,16 +64,18 @@
       </li>
       -->
     </ul>
+    <!--검색
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
+    -->
   </div>
   </nav>
 
   <div class="container-fluid">
     <dic class="row">
-    <div class="col-md-2">
+    <div class="col-md-2" id="sidebar">
       {% block sidebar %}{% endblock %}
     </div>
     <div class="col-md-10">
