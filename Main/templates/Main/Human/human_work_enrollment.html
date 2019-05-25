@@ -1,0 +1,49 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_근무등록{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <form id="create" action="{% url 'main:WorkEnrollment' %}" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                            <table class="table table-hover">
+                                <tr style= "background-color:steelblue">
+                                    <th style="color:white">근무등록</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>근무자명*</th>
+                                    <td><input type="text" id="employee_name" name="employee_name" class="form-control mb-4" placeholder="근무자명"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>근무일</th>
+                                    <td><input type="date" id="day_work" name="day_work" class="form-control mb-4"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>근무파트</th>
+                                    <td><input type="text" id="work_time" name="work_time" class="form-control mb-4" placeholder="예) 오전 9시"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>근무시간</th>
+                                    <td><input type="text" id="daytime_work" name="daytime_work" class="form-control mb-4" placeholder="근무시간을 입력해주세요"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th><input type="submit" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></th>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+{% endblock %}

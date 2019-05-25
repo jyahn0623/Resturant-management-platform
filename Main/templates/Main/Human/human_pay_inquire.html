@@ -1,0 +1,51 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_급여조회{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h1>전체 급여지급조회</h1>
+                        <table id="searchtable" class='table table-sm table-bordered table-hover'>
+                                    <thead class="thead-light">                                
+                                    <tr>
+                                        <th>근무자</th>
+                                        <th>정기수당</th>
+                                        <th>특수수당</th>
+                                        <th>총 급여</th>
+                                        <th>은행</th>
+                                        <th>계좌번호</th>
+                                        <th>지급일</th>
+                                        <th colspan="2">수정∙삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pay in pay  %}
+                                    {% if pay.pay_isdelete == False %}
+                                    <tr>
+                                    <td>{{ pay.employee.employee_name }}</td>
+                                    <td>{{ pay.work_pay }}</td>
+                                    <td>{{ pay.other_pay }}</td>
+                                    <td>{{ pay.whole_pay }}</td>
+                                    <td>{{ pay.employee.employee_bank }}</td>
+                                    <td>{{ pay.employee.employee_banknumber }}</td>
+                                    <td>{{ pay.day_pay }}</td>
+                                    <td><a href="{% url 'main:PaySave' pay.pk %}"><button class="btn btn-outline-primary btn-sm m-0 waves-effect">수정</button></a></td>
+                                    <td><a href="{% url 'main:PayDelete' pay.pk %}"><button class="btn btn-outline-danger btn-sm m-0 waves-effect">삭제</button></a></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+    <style>
+            table{
+               text-align: center;
+            }
+            th{
+                text-align: center;
+            }
+{% endblock %}

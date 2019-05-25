@@ -1,0 +1,46 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_근무조회{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h1>전체 근무조회</h1>
+                        <table id="searchtable" class='table table-sm table-bordered table-hover'>
+                                    <thead class="thead-light">                                
+                                    <tr>
+                                        <th>근무자</th>
+                                        <th>근무일</th>
+                                        <th>근무파트</th>
+                                        <th>근무시간</th>
+                                        <th colspan="2">수정∙삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for work in work  %}
+                                    {% if work.work_isdelete == False %}
+                                    <tr>
+                                    <td>{{ work.employee.employee_name }}</td>
+                                    <td>{{ work.day_work }}</td>
+                                    <td>{{ work.work_time }}</td>
+                                    <td>{{ work.daytime_work }}</td>
+                                    <td><a href="{% url 'main:WorkSave' work.pk %}"><button class="btn btn-outline-primary btn-sm m-0 waves-effect">수정</button></a></td>
+                                    <td><a href="{% url 'main:WorkDelete' work.pk %}"><button class="btn btn-outline-danger btn-sm m-0 waves-effect">삭제</button></a></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <h4>*근무시간에 휴식시간포함</h4>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+    <style>
+            table{
+               text-align: center;
+            }
+            th{
+                text-align: center;
+            }
+    </style>

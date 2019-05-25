@@ -1,0 +1,62 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_급여등록{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <form id="create" action="{% url 'main:PayEnrollment' %}" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                            <table class="table table-hover">
+                                <tr style= "background-color:steelblue">
+                                    <th style="color:white">급여등록</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>근무자명*</th>
+                                    <td><input type="text" id="employee_name" name="employee_name" class="form-control mb-4" placeholder="근무자명"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>정기수당</th>
+                                    <td><input type="text" id="work_pay" name="work_pay" onkeyup='call()' class="form-control mb-4" placeholder="정기수당"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>특별수당</th>
+                                    <td><input type="text" id="other_pay" name="other_pay" onkeyup='call()' class="form-control mb-4" placeholder="특별수당"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>총수당</th>
+                                    <td><input type="text" id="whole_pay" name="whole_pay" class="form-control mb-4" placeholder="총수당"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>지급일</th>
+                                    <td><input type="date" id="day_pay" name="day_pay" class="form-control mb-4"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th><input type="submit" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></th>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+    <script>
+    function call()
+    {
+     if(document.getElementById("work_pay").value && document.getElementById("other_pay").value){
+      document.getElementById('whole_pay').value =parseInt(document.getElementById('work_pay').value) + parseInt(document.getElementById('other_pay').value);
+     }
+    }
+    </script>
+{% endblock %}

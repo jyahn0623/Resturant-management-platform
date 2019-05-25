@@ -1,0 +1,54 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_사원조회{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h1>전체 사원조회</h1>
+                    <table id="searchtable" class='table table-sm table-bordered table-hover'>
+                                <thead class="thead-light">                                
+                                <tr>
+                                    <th>이름</th>
+                                    <th>주민등록번호</th>
+                                    <th>핸드폰번호</th>
+                                    <th>이메일</th>
+                                    <th>성별</th>
+                                    <th>은행</th>
+                                    <th>계좌번호</th>
+                                    <th>주소</th>
+                                    <th colspan="2">수정∙삭제</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for emp in employee  %}
+                                {% if emp.employee_isdelete == False %}
+                                <tr>
+                                <td>{{ emp.employee_name }}</td>
+                                <td>{{ emp.resident_number }}</td>
+                                <td>{{ emp.employee_phone }}</td>
+                                <td>{{ emp.employee_email }}</td>
+                                <td>{{ emp.sex }}</td>  
+                                <td>{{ emp.employee_bank }}</td>
+                                <td>{{ emp.employee_banknumber }}</td>
+                                <td>{{ emp.employee_address }}</td>
+                                <td><a href="{% url 'main:EmpSave' emp.pk %}"><button class="btn btn-outline-primary btn-sm m-0 waves-effect">수정</button></a></td>
+                                <td><a href="{% url 'main:EmpDelete' emp.pk %}"><button class="btn btn-outline-danger btn-sm m-0 waves-effect">삭제</button></a></td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+            </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<style>
+        table{
+           text-align: center;
+        }
+        th{
+            text-align: center;
+        }
+   </style>
+{% endblock %}   
