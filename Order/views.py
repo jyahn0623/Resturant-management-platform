@@ -21,12 +21,18 @@ class mainView(View):
 def doOrder(request):
     datas_to_json = json.loads(request.POST.get('datas', ''))
     # 프로토 타입에서는 table num를 1로 가정
-    for menu in datas_to_json['menu']:   
+    
+    # 이미 주문된 상태라면 기존 시트에 추가가 되게 함
+    try:
+        order_sheet=os.objects.get(os_status=True, os_table_no=1)
+    except os.DoesNotExist:
         order_sheet=os.objects.create(
             os_table_no=1,
             os_amount=0,
-            
         )
+    for menu in datas_to_json['menu']:
+        if datas_to_json['menu'][menu] <= 0:
+            continue   
         orderd_menu = to.objects.create(
             to_menu=m_Menu.objects.get(pk=menu),
             to_count=datas_to_json['menu'][menu],

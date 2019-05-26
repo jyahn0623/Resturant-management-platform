@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.views import View
-from Main.models import Table_order, Order_sheet, Profit
+from Main.models import Table_order, Order_sheet, Profit, Menu
 import json
 # Create your views here.
 
@@ -13,7 +13,8 @@ class OrderSheetInfo(View):
         datas = {}
         try:
             os = Order_sheet.objects.get(os_table_no=kwargs.get('id'), os_status=True)
-            to = Table_order.objects.filter(to_order_sheet=os)
+            to = Table_order.objects.filter(to_order_sheet=os, to_isActive=True).exclude(to_status='취소')
+            print(os, to)
             datas['table_info'] = os
             datas['menu_info'] = to
             datas['amount'] = getMenuMoneySum(to)
@@ -49,3 +50,18 @@ def getMenuMoneySum(menus):
     for menu in menus:
         amount_price += (int(menu.to_menu.m_price) * menu.to_count)
     return amount_price
+
+class OrderSheetUpdate(View):
+    def get(self, request, *args, **kwargs):
+        datas = {}
+        try:
+            print(kwargs.get('id'))
+            os = Order_sheet.objects.get(pk=kwargs.get('id'))
+            to = Table_order.objects.filter(to_order_sheet=os)
+            datas['os'] = os
+            datas['to'] = to
+            datas['menu'] = Menu.objects.all()
+        except Exception as e:
+            print(e)
+
+        return render(request, 'Counter/table-modified.html', datas)

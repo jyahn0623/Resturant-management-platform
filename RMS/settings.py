@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery',
     'channels',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

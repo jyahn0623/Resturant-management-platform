@@ -1,0 +1,32 @@
+<body>
+<table class='table table-hover'>
+    <thead>
+        <th>메뉴</th>
+        <th>개수</th>
+        <th>가격</th>
+    </thead>
+   
+    <tbody>
+
+    {% for menu in to %}
+        <tr id="{{menu.id}}">
+            <td>{{menu.to_menu}}</td>
+            <td>{{menu.to_count}}</td>
+            <td>{{menu.to_menu.m_price}}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+<button>수정</button>
+<hr>
+<div>
+    {% for m in menu %}
+        <div>
+            {{m.m_name}}
+            <button>추가</button>
+            <button>삭제</button>
+        </div>
+    {% endfor %}
+</div>  
+</body>
