@@ -401,3 +401,50 @@ def PayDelete(request, pk):
        pay.save()
        return redirect('main:PayInquire')
     return render(request, 'Main/Human/human_pay_delete.html', {'pay':pay})
+
+#채용등록
+def HireEnrollment(request):
+    if request.method == 'POST':
+        restaurant_name = Restaurant.objects.get(restaurant_name=request.POST.get('restaurant_name', False))
+        user_name = User.objects.get(name=request.POST['name'])
+        Hire.objects.create(
+        restaurant = restaurant_name,
+        user = user_name,
+        hire_title = request.POST['hire_title'],
+        hire_content = request.POST['hire_content']
+        )
+        return redirect('main:HireInquire')
+    return render(request, 'Main/Human/human_hire_enrollment.html')
+
+#채용조회
+def HireInquire(request):
+    resume = Resume.objects.all()
+    return render(request, 'Main/Human/human_hire_inquire.html', {'resume':resume})
+
+#채용세부조회
+def HireDetail(request, pk):
+    resume = Resume.objects.get(pk=pk)
+    return render(request, 'Main/Human/human_hire_detail.html', {'resume':resume})
+
+#채용메인
+def HireMian(request):
+    hire = Hire.objects.all()
+    return render(request, 'Main/Human/hire_main.html', {'hire':hire})
+
+#이력서 등록
+def HireSign(request, pk):
+    hire = Hire.objects.get(pk=pk)
+    if request.method == 'POST':
+        restaurant_name = Restaurant.objects.get(restaurant_name=request.POST.get('restaurant_name', False))
+        Resume.objects.create(
+        restaurant = restaurant_name,
+        apply_name = request.POST['apply_name'],
+        apply_phone = request.POST['apply_phone'],
+        apply_email = request.POST['apply_email'],
+        apply_address = request.POST['apply_address'],
+        apply_academic = request.POST['apply_academic'],
+        apply_career = request.POST['apply_career'],
+        apply_motive = request.POST['apply_motive']
+        )
+        return redirect('main:HireMain')
+    return render(request, 'Main/Human/hire_main_sign.html', {'hire':hire})

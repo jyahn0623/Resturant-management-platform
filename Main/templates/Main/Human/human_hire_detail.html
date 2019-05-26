@@ -1,0 +1,47 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_채용세부조회{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h1>{{ resume.apply_name }}님의 이력서</h1>
+                        <table id="searchtable" class='table table-sm table-bordered table-hover'>                           
+                            <tr>
+                                <th>핸드폰</th>
+                                <td>{{ resume.apply_phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td>{{ resume.apply_email }}</td>
+                            </tr>
+                            <tr>
+                                <th>주소</th>
+                                <td>{{ resume.apply_address }}</td>
+                            </tr>
+                            <tr>
+                                <th>최종학력</th>
+                                <td>{{ resume.apply_academic }}</td>
+                            </tr>
+                            <tr>
+                                <th>경력</th>
+                                <td>{{ resume.apply_career }}</td>
+                            </tr>
+                            <tr>
+                                <th>지원동기</th>
+                                <td>{{ resume.apply_motive }}</td>
+                            </tr>
+                        </table>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+    <style>
+            table{
+               text-align: center;
+            }
+            th{
+                text-align: center;
+            }
+    </style>
+{% endblock %}

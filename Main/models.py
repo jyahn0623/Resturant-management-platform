@@ -149,6 +149,7 @@ class Education(models.Model):
 
 #교육이수여부
 class Iseducation(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
     education = models.ForeignKey(Education, on_delete=models.CASCADE, blank=True, null=True, verbose_name='교육명')
     iscomplete = models.BooleanField(default=False, verbose_name='이수')
@@ -158,6 +159,7 @@ class Iseducation(models.Model):
 
 #근무
 class Work(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
     daytime_work = models.IntegerField(null=True, blank=True, verbose_name='근무시간')
     day_work = models.DateField(blank=True, null=True, verbose_name='근무일')
@@ -170,6 +172,7 @@ class Work(models.Model):
 
 #급여
 class Pay(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
     work_pay = models.IntegerField(null=True, blank=True, verbose_name='정기수당')
     other_pay = models.IntegerField(null=True, blank=True, verbose_name='특별수당')
@@ -179,3 +182,27 @@ class Pay(models.Model):
 
     def __int__(self):
         return self.work_pay
+
+#채용등록
+class Hire(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='등록자명')
+    hire_title = models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='제목')
+    hire_content = models.TextField(max_length=400, null=True,blank=True, default="없음", verbose_name='내용')
+
+    def __str__(self):
+        return self.hire_title
+
+#채용신청
+class Resume(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    apply_name = models.CharField(max_length=10, null=True, blank=True, verbose_name='이름')
+    apply_phone = models.CharField(max_length=15, null=True, blank=True, verbose_name='핸드폰')
+    apply_email = models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='이메일')
+    apply_address = models.CharField(max_length=100, null=True, blank=True, verbose_name='주소')
+    apply_academic = models.CharField(max_length=20, null=True, blank=True, verbose_name='최종학력')
+    apply_career =  models.TextField(max_length=300, null=True, blank=True, verbose_name='경력')
+    apply_motive = models.TextField(max_length=300, null=True, blank=True, verbose_name='지원동기')
+
+    def __str__(self):
+        return self.apply_name

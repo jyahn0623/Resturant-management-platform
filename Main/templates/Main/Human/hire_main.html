@@ -1,0 +1,47 @@
+{% extends 'Main/Human/hire_base.html' %}
+{% block title %}직원채용{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-8">
+                <h1>모집</h1>
+                    <table id="searchtable" class='table table-sm table-bordered table-hover'>
+                                <thead class="thead-light">                                
+                                <tr>
+                                    <th>사명</th>
+                                    <th>대표자</th>
+                                    <th>제목</th>
+                                    <th>내용</th>
+                                    <th>핸드폰번호</th>
+                                    <th>이메일</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for hire in hire  %}
+                                <tr>
+                                <td>{{ hire.restaurant.restaurant_name }}</td>
+                                <td>{{ hire.user.name }}</td>
+                                <td>{{ hire.hire_title }}</td>
+                                <td>{{ hire.hire_content }}</td>
+                                <td>{{ hire.user.phone }}</td>
+                                <td>{{ hire.user.e_mail }}</td>
+                                <td><a href="{% url 'main:HireSign' hire.pk %}"><button class="btn btn-outline-primary btn-sm m-0 waves-effect">지원하기</button></a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+            </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<style>
+        table{
+           text-align: center;
+        }
+        th{
+            text-align: center;
+        }
+</style>
+{% endblock %}

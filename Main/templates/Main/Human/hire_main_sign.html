@@ -1,0 +1,69 @@
+{% extends 'Main/Human/hire_base.html' %}
+{% block title %}이력서 작성{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="card">
+                    <form id="create" action="{% url 'main:HireSign' hire.pk %}" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                        <table class="table table-hover">
+                            <tr style= "background-color:steelblue">
+                                <th style="color:white">이력서 작성</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>지원회사</th>
+                                <td><input type="text" id="restaurant_name" name="restaurant_name" class="form-control mb-4" value="{{ hire.restaurant.restaurant_name }}" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>성명*</th>
+                                <td><input type="text" id="apply_name" name="apply_name" class="form-control mb-4" placeholder="성명을 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>핸드폰*</th>
+                                <td><input type="text" id="apply_phone" name="apply_phone" class="form-control mb-4" placeholder="핸드폰번호를 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td><input type="text" id="apply_email" name="apply_email" class="form-control mb-4" placeholder="이메일을 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>주소*</th>
+                                <td><input type="text" id="apply_address" name="apply_address" class="form-control mb-4" placeholder="주소를 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>최종학력*</th>
+                                <td><input type="text" id="apply_academic" name="apply_academic" class="form-control mb-4" placeholder="내용을 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>경력*</th>
+                                <td><input type="text" id="apply_career" name="apply_career" class="form-control mb-4" placeholder="내용을 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>지원동기*</th>
+                                <td><input type="text" id="apply_motive" name="apply_motive" class="form-control mb-4" placeholder="내용을 입력해주세요"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th><input type="submit" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+{% endblock %}

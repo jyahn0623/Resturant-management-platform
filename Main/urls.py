@@ -46,6 +46,11 @@ urlpatterns = [
     path('Human/Pay/Inquire', views.PayInquire, name='PayInquire'), #급여조회
     path('Human/Pay/Save/<int:pk>', views.PaySave, name='PaySave'), #급여변경
     path('Human/Pay/Delete/<int:pk>', views.PayDelete, name='PayDelete'), #급여삭제
+    path('Human/Hire/Enrollment', views.HireEnrollment, name='HireEnrollment'), #채용등록
+    path('Human/Hire/Inquire', views.HireInquire, name='HireInquire'), #채용조회
+    path('Human/Hire/Detail/<int:pk>', views.HireDetail, name='HireDetail'), #채용세부조회
+    path('Hire/Main', views.HireMian, name='HireMain'), #채용메인페이지
+    path('Hire/Main/Sign/<int:pk>', views.HireSign, name='HireSign'), #이력서 등록
 
     # 매출 관리
     path('Profit/', ProfitMain.as_view(), name="profit-main")
