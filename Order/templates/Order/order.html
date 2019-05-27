@@ -39,26 +39,62 @@
         </div>
     </div>
     <script>
+     
         var amount = 0;
         var datas = {
             'menu' : {},
+            'mapping' : {},
+            'price' : {}
         };
         function selectMenu(menu_pk, price, name)
         {  
+            
             amount += price;
-            console.log(menu_pk + " " + price + " " + name);
-            console.log(name in datas);
             if (menu_pk in datas['menu'] == false){
+                datas['mapping'][menu_pk] = name;
+                datas['price'][menu_pk] = price;
                 datas['menu'][menu_pk] = 1;
             }else{
                 datas['menu'][menu_pk] += 1;
             }
-
-            datas['amount'] = amount;
+            datas['amount'] = amount;  
             
-            $("div.receipt .receipt_money").append("<p>" +name + " " + price + "</p>");
-            $("div.receipt .menu").html(amount +"원");
+            //$("div.receipt .receipt_money").append("<p id='name'>" +name + " " + price + "</p>");
+            drawOrderSheet(amount)
         }
+        function menuModify(type, menu_pk)
+        {
+            // type 1 -> 증가, type 0 -> 감소
+            if (type==1){
+                datas['menu'][menu_pk]++;
+                amount += datas['price'][menu_pk];
+            }else if(type==0){
+                if (datas['menu'][menu_pk] < 1){
+                    delete datas['menu'][menu_pk];
+                    return false;
+                }
+
+                
+                datas['menu'][menu_pk]--;
+                amount -= datas['price'][menu_pk];
+            }
+        
+            drawOrderSheet(amount);
+        }
+        function drawOrderSheet(){
+            var datas_to_string = "";
+            for (data in datas['menu']){
+                if (datas['menu'][data] > 0){
+                     datas_to_string += '<p>' + datas['mapping'][data] + " " + 
+                    datas['menu'][data] + 
+                    " <input onclick='menuModify(1,"+data+")' class='btn btn-primary' type='button' value='+' >" +
+                    " <input onclick='menuModify(0, "+data+")'class='btn btn-primary' type='button' value='-' >" +
+                    '</p>';
+                }  
+            }
+            $("div.receipt .menu").html(datas_to_string + " " +amount +"원");
+        }
+
 
         function ordering()
         {

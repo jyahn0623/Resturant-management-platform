@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from django.views import View
 import json
 from django.core import serializers
+from django.db.models import F, Sum, Count
 
 # -------------- 재고 부분 ------------------#
 # Main
@@ -256,7 +257,8 @@ class orderCancel(View):
 class ProfitMain(View):
     def get(self, request, *args, **kwargs):
         profits = Profit.objects.all().order_by('-p_profit_date')
-        return render(request, 'Main/Profit/main.html', {'profits' : profits, })
+        amount = profits.aggregate(amount=Sum('p_amount'))
+        return render(request, 'Main/Profit/main.html', {'profits' : profits, 'amount' : amount['amount']})
 
 class ProfitSearch(View):
     def post(self, request, *args, **kwargs):
@@ -270,7 +272,8 @@ class ProfitSearch(View):
                 p_profit_date__month=start_date[5:7], p_profit_date__day=start_date[8:10] ).order_by('-p_profit_date')
         else:
             datas = Profit.objects.filter(p_profit_date__gte=start_date, p_profit_date__lte=end_date).order_by('-p_profit_date')
-        return render(request, 'Main/Profit/main.html', {'profits' : datas, })
+        amount = datas.aggregate(amount=Sum('p_amount'))
+        return render(request, 'Main/Profit/main.html', {'profits' : datas, 'amount' : amount['amount']})
 
 # 지출 관리
 class SpendingMain(View):

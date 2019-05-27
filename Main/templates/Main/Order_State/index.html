@@ -1,6 +1,7 @@
 {% extends 'Main/Order_State/main.html' %}
 
 {% block content %} 
+
 <table class="table table-hover table-bordered">    
     <thead class="thead thead-light">
         <th>테이블 번호</th>
@@ -11,6 +12,7 @@
         <th>처리</th>
     </thead>
     <tbody>
+    {% if orders %}
         {% for order in orders %}
         <tr>
             <td>{{order.to_order_sheet.os_table_no}}</td>
@@ -19,11 +21,14 @@
             <td id="order{{order.pk}}">{{order.to_status}}</td>
             <td><span id="time{{order.pk}}">{{order.to_order_sheet.os_order_date}}</span> <span id="pasttime{{order.pk}}"></span></td>
             <td>
-                <button class="btn btn-success" onclick="doneOrder({{order.pk}})">주문완료 처리</button>
-                <button class="btn btn-danger" onclick="cancelOrder({{order.pk}})">주문취소 처리</button>
+                <button class="btn btn-success" onclick="doneOrder({{order.pk}})">완료</button>
+                <button class="btn btn-danger" onclick="cancelOrder({{order.pk}})">취소</button>
             </td>
         </tr>
     {% endfor %}
+    {% else %}
+        <td colspan="6" class="text-center">접수된 주문이 없습니다.</td>
+    {% endif %}
     </tbody>
 </table>
 {% endblock %}
