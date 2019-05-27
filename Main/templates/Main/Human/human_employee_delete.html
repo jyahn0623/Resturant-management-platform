@@ -1,0 +1,29 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<div class="form_box">
+    <form action="{% url 'main:EmpDelete' employee.pk %}" method="POST">
+        {% csrf_token %}
+        <h1>정말 삭제하시겠습니까?</h1><br>
+        <button class="write_button" onclick="button1_click();">네 삭제하겠습니다</button>
+    </form>
+</div>
+
+<script>
+function button1_click() {
+  alert("삭제가 성공적으로 완료되었습니다");
+}
+function button2_click() {
+alert("변경이 취소되었습니다");
+}
+</script>
+<style>
+    div {
+    margin-top:150px; 
+    margin-left:-50px; 
+    text-align: center;
+    }
+</style>

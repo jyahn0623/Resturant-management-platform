@@ -1,0 +1,77 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_사원등록{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="card">
+                    <form id="create" action="{% url 'main:EmpEnrollment' %}" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                        <table class="table table-hover">
+                            <tr style= "background-color:steelblue">
+                                <th style="color:white">사원등록</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>이름*</th>
+                                <td><input type="text" id="employee_name" name="employee_name" class="form-control mb-4" placeholder="이름을 입력해주세요"></td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>주민등록번호*</th>
+                                <td><input type="text" id="resident_number" name="resident_number" class="form-control mb-4" placeholder="주민등록번호를 입력해주세요"></td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>주소*</th>
+                                <td><input type="text" id="employee_address" name="employee_address" class="form-control mb-4" placeholder="주소를 입력해주세요"></td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>핸드폰번호</th>
+                                <td><input type="text" id="employee_phone" name="employee_phone" class="form-control mb-4" placeholder=""></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td><input type="text" id="employee_email" name="employee_email" class="form-control mb-4" placeholder=""></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>성별</th>
+                                <td><select name='sex' class="browser-default custom-select">
+                                    <option value = "남자">남자</option>
+                                    <option value = "여자">여자</option>
+                                </select></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>은행</th>
+                                <td><input type="text" id="employee_bank" name="employee_bank" class="form-control mb-4" placeholder=""></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>계좌번호</th>
+                                <td><input type="text" id="employee_banknumber" name="employee_banknumber" class="form-control mb-4" placeholder=""></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>사진</th>
+                                <td><input type="file" id="employee_pic" name="employee_pic" class="form-control mb-4">
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th><input type="submit" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_급여계산기{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>급여계산기</h1>
+                <h2>2019년 최저시급은 <strong>8,350</strong>원입니다.</h2>
+                <br><br>
+                <table  border="2">
+                    <tr>
+                        <td colspan="4">
+                            <input type="text" id="display">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <input type="text" id="result">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" onclick="reset()">AC</td>
+                        <td onclick="add('/')">/</td>
+                    </tr>
+                    <tr>
+                        <td onclick="add(7)">7</td>
+                        <td onclick="add(8)">8</td>
+                        <td onclick="add(9)">9</td>
+                        <td onclick="add('*')">*</td>
+                    </tr>
+                    <tr>
+                        <td onclick="add(4)">4</td>
+                        <td onclick="add(5)">5</td>
+                        <td onclick="add(6)">6</td>
+                        <td onclick="add('-')">-</td>
+                    </tr>
+                    <tr>
+                        <td onclick="add(1)">1</td>
+                        <td onclick="add(2)">2</td>
+                        <td onclick="add(3)">3</td>
+                        <td onclick="add('+')">+</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" onclick="add(0)">0</td>
+                        <td onclick="add('.')">.</td>
+                        <td onclick="calculate()">=</td>
+                    </tr>
+                </table>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<style>
+    table {
+        border-collapse: collapse;
+        }
+    td {
+        padding: 30px 50px;
+        text-align: center;
+        font-size: 35px;
+        }
+    input {
+        text-align: right;
+        border: none;
+        }
+    input:focus {
+        outline: none;
+        }
+</style>
+   <script>
+    function add(char) {
+        var display = document.getElementById('display');
+       
+        display.value = display.value + char;
+        
+    }
+    function calculate() {
+        var display = document.getElementById('display');
+        var result = eval(display.value); 
+        document.getElementById('result').value = result;
+    }
+    function reset() {
+        document.getElementById('display').value = "";
+        document.getElementById('result').value = "";
+    }
+</script>
+{% endblock %}

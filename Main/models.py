@@ -139,6 +139,7 @@ class Profit(models.Model):
     p_profit_date = models.DateTimeField(auto_now_add=True)
     p_detail = models.CharField(max_length=100)
     p_amount = models.IntegerField(default=0)
+<<<<<<< HEAD
     p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE, null=True)
     
 class Spending(models.Model):
@@ -149,3 +150,123 @@ class Spending(models.Model):
     s_detail = models.CharField(max_length=100, default="")
     s_expense = models.IntegerField(default=0)
     
+=======
+    p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE)
+    
+
+#식당
+class Restaurant(models.Model):
+    restaurant_name= models.CharField(max_length=50, null=True, blank=True, verbose_name='사명') #식당명
+    license_number= models.CharField(max_length=30, null=True, blank=True, verbose_name='사업자번호') #사업자번호
+    business= models.CharField(max_length=50, null=True, blank=True, verbose_name='업종') #업종
+    restaurant_pic= models.ImageField('식당사진', null=True, blank=True, default="") #식당사진
+    registration_date= models.DateField(null=True, blank=True, verbose_name='등록일') # 등록일
+    restaurant_address= models.CharField(max_length=100, null=True, blank=True, verbose_name='주소') #주소
+
+    def __str__(self):
+        return self.restaurant_name
+
+#사용자
+class User(models.Model):
+    restaurant= models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명') #식당외래키
+    name= models.CharField(max_length=10, null=True, blank=True, verbose_name='이름') #사용자명
+    user_id= models.CharField(max_length=30, default="", verbose_name='ID') #사용자id
+    user_pw= models.CharField(max_length=30, default="", verbose_name='PW') #사용자pw
+    phone= models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='핸드폰') #사용자 핸드폰
+    e_mail= models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='이메일') #사용자 이메일
+    user_pic= models.ImageField('사진', null=True, blank=True, default="") #사용자 사진
+    user_bank= models.CharField(max_length=20, null=True, blank=True, verbose_name='은행명') #사용자은행
+    user_banknumber= models.CharField(max_length=30, null=True, blank=True, verbose_name='계좌번호')
+
+    def __str__(self):
+        return self.name
+    
+#종업원
+class Employee(models.Model):
+    restaurant= models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    employee_name = models.CharField(max_length=10, null=True, blank=True, verbose_name='직원명')
+    employee_pic= models.ImageField('종업원사진', null=True, blank=True, default="")
+    sex = models.CharField(max_length=10, null=True, blank=True, verbose_name='성별')
+    employee_phone= models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='핸드폰') 
+    employee_email= models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='이메일')
+    resident_number = models.CharField(max_length=20, null=True, blank=True, verbose_name='주민등록번호')
+    employee_address= models.CharField(max_length=100, null=True, blank=True, verbose_name='주소')
+    employee_bank= models.CharField(max_length=20, null=True, blank=True, verbose_name='은행명')
+    employee_banknumber= models.CharField(max_length=30, null=True, blank=True, verbose_name='계좌번호')
+    employee_isdelete = models.BooleanField(default=False, verbose_name='삭제')
+
+    def __str__(self):
+        return self.employee_name
+
+#교육
+class Education(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    education_name = models.CharField(max_length=50, null=True, blank=True, verbose_name='교육명')
+    education_content = models.CharField(max_length=100, null=True, blank=True, verbose_name='교육내용 또는 소개')
+    education_pic = models.ImageField('교육사진', null=True, blank=True, default="")
+    education_isdelete = models.BooleanField(default=False, verbose_name='삭제')
+
+
+    def __str__(self):
+        return self.education_name
+
+#교육이수여부
+class Iseducation(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
+    education = models.ForeignKey(Education, on_delete=models.CASCADE, blank=True, null=True, verbose_name='교육명')
+    iscomplete = models.BooleanField(default=False, verbose_name='이수')
+
+    def __str__(self):
+        return self.iscomplete
+
+#근무
+class Work(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
+    daytime_work = models.IntegerField(null=True, blank=True, verbose_name='근무시간')
+    day_work = models.DateField(blank=True, null=True, verbose_name='근무일')
+    work_time = models.CharField(max_length=50, null=True, blank=True, verbose_name='근무파트')
+    work_isdelete = models.BooleanField(default=False, verbose_name='삭제')
+
+    def __int__(self):
+        return self.daytime_work
+
+
+#급여
+class Pay(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True, verbose_name='사원명')
+    work_pay = models.IntegerField(null=True, blank=True, verbose_name='정기수당')
+    other_pay = models.IntegerField(null=True, blank=True, verbose_name='특별수당')
+    whole_pay = models.IntegerField(null=True, blank=True, verbose_name='총수당')
+    day_pay = models.DateTimeField(auto_now_add=True, verbose_name='지급일')
+    pay_isdelete = models.BooleanField(default=False, verbose_name='삭제')
+
+    def __int__(self):
+        return self.work_pay
+
+#채용등록
+class Hire(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='등록자명')
+    hire_title = models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='제목')
+    hire_content = models.TextField(max_length=400, null=True,blank=True, default="없음", verbose_name='내용')
+
+    def __str__(self):
+        return self.hire_title
+
+#채용신청
+class Resume(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True, verbose_name='소속명')
+    apply_name = models.CharField(max_length=10, null=True, blank=True, verbose_name='이름')
+    apply_phone = models.CharField(max_length=15, null=True, blank=True, verbose_name='핸드폰')
+    apply_email = models.CharField(max_length=50, null=True,blank=True, default="없음", verbose_name='이메일')
+    apply_address = models.CharField(max_length=100, null=True, blank=True, verbose_name='주소')
+    apply_academic = models.CharField(max_length=20, null=True, blank=True, verbose_name='최종학력')
+    apply_career =  models.TextField(max_length=300, null=True, blank=True, verbose_name='경력')
+    apply_motive = models.TextField(max_length=300, null=True, blank=True, verbose_name='지원동기')
+
+    def __str__(self):
+        return self.apply_name
+>>>>>>> 0d253f000eaf8e13d2e965ebb6ce51e7a3813f5f

@@ -1,0 +1,49 @@
+{% extends 'Main/Human/human_main.html' %}
+{% block title %}인사_채용등록{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <form id="create" action="{% url 'main:HireEnrollment' %}" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                            <table class="table table-hover">
+                                <tr style= "background-color:steelblue">
+                                    <th style="color:white">채용등록</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>회사명*</th>
+                                    <td><input type="text" id="restaurant_name" name="restaurant_name" class="form-control mb-4" placeholder="사명을 입력해주세요"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>등록자명*</th>
+                                    <td><input type="text" id="name" name="name" class="form-control mb-4" placeholder="사용자의 이름을 입력해주세요"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>제목</th>
+                                    <td><input type="text" id="hire_title" name="hire_title" class="form-control mb-4" placeholder="제목을 입력해주세요"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>내용</th>
+                                    <td><input type="text" id="hire_content" name="hire_content" class="form-control mb-4" placeholder="내용을 입력해주세요"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th><input type="submit" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></th>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+{% endblock %}

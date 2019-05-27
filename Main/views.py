@@ -256,6 +256,7 @@ class orderCancel(View):
 # 수익 관리
 class ProfitMain(View):
     def get(self, request, *args, **kwargs):
+<<<<<<< HEAD
         profits = Profit.objects.all().order_by('-p_profit_date')
         amount = profits.aggregate(amount=Sum('p_amount'))
         return render(request, 'Main/Profit/main.html', {'profits' : profits, 'amount' : amount['amount']})
@@ -303,3 +304,228 @@ class MenuApi(View):
         datas_to_JSON = serializers.serialize('json', datas)
         print(datas_to_JSON)
         return HttpResponse(datas_to_JSON, content_type="json/application")
+=======
+        profits = Profit.objects.all()
+        return render(request, 'Main/Profit/main.html', {'profits' : profits, })
+
+
+# -------------- 인사 부분 ------------------#
+
+#인사 메인
+def Human(request):
+    return render(request, 'Main/Human/human_main.html')
+
+#사원등록
+def EmpEnrollment(request):
+    if request.method == 'POST':
+        Employee.objects.create(
+        employee_name = request.POST['employee_name'],
+        sex = request.POST['sex'],
+        employee_phone = request.POST['employee_phone'],
+        employee_email = request.POST['employee_email'],
+        resident_number = request.POST['resident_number'],
+        employee_address = request.POST['employee_address'],
+        employee_bank = request.POST['employee_bank'],
+        employee_banknumber = request.POST['employee_banknumber'],
+        employee_pic = request.POST.get('employee_pic','') 
+        )
+        return redirect('main:EmpInquire')
+    return render(request, 'Main/Human/human_employee_enrollment.html')
+
+#사원조회
+def EmpInquire(request):
+    emp = Employee.objects.all()
+    return render(request, 'Main/Human/human_employee_inquire.html', {'employee':emp})
+
+#사원삭제
+def EmpDelete(request, pk):
+    emp = Employee.objects.get(pk=pk)
+    if request.method == 'POST':
+       emp.employee_isdelete = True
+       emp.save(update_fields=['employee_isdelete'])
+       return redirect('main:EmpInquire')
+    return render(request, 'Main/Human/human_employee_delete.html',{'employee':emp})
+
+#사원변경
+def EmpSave(request,pk):
+    emp = Employee.objects.get(pk=pk)
+    if request.method == 'POST':
+       emp.employee_name = request.POST['employee_name']
+       emp.employee_phone = request.POST['employee_phone']
+       emp.employee_email = request.POST['employee_email']
+       emp.resident_number = request.POST['resident_number']
+       emp.employee_address = request.POST['employee_address']
+       emp.employee_bank = request.POST['employee_bank']
+       emp.employee_banknumber = request.POST['employee_banknumber']
+       emp.employee_pic = request.POST['employee_pic']
+       emp.save()
+       return redirect('main:EmpInquire')
+    return render(request, 'Main/Human/human_employee_save.html',{'employee':emp})
+
+
+#교육등록
+def EduEnrollment(request):
+    if request.method == 'POST':
+        Education.objects.create(
+        education_name = request.POST['education_name'],
+        education_content = request.POST['education_content'],
+        education_pic = request.POST.get('education_pic','') 
+        )
+        return redirect('main:EduInquire')
+    return render(request, 'Main/Human/human_education_enrollment.html')
+
+
+#교육조회
+def EduInquire(request):
+    edu = Education.objects.all()
+    return render(request, 'Main/Human/human_education_inquire.html',{'education':edu})
+
+#교육변경
+def EduSave(request, pk):
+    edu = Education.objects.get(pk=pk)
+    if request.method == 'POST':
+        edu.education_name = request.POST['education_name']
+        edu.education_content = request.POST['education_content']
+        education_pic = request.POST.get('education_pic','') 
+        edu.save()
+        return redirect('main:EduInquire')
+    return render(request, 'Main/Human/human_education_save.html',{'education':edu})
+
+#교육삭제
+def EduDelete(request, pk):
+    edu = Education.objects.get(pk=pk)
+    if request.method == 'POST':
+       edu.education_isdelete = True
+       edu.save(update_fields=['education_isdelete'])
+       return redirect('main:EduInquire')
+    return render(request, 'Main/Human/human_education_delete.html', {'education':edu})
+
+#급여계산기
+def PayCal(request):
+    return render(request, 'Main/Human/human_payroll_calculator.html')
+
+#근무등록
+def WorkEnrollment(request):
+    if request.method == 'POST':
+        emp = Employee.objects.get(employee_name=request.POST['employee_name'])
+        Work.objects.create(
+        employee = emp,
+        daytime_work = request.POST['daytime_work'],
+        day_work = request.POST['day_work'],
+        work_time = request.POST['work_time']
+        )
+        return redirect('main:WorkInquire')
+    return render(request, 'Main/Human/human_work_enrollment.html')
+
+#근무조회
+def WorkInquire(request):
+    work = Work.objects.all()
+    return render(request, 'Main/Human/human_work_inquire.html', {'work':work})
+
+#근무변경
+def WorkSave(request, pk):
+    work = Work.objects.get(pk=pk)
+    if request.method == 'POST':
+        work.daytime_work = request.POST['daytime_work']
+        work.day_work = request.POST['day_work']
+        work.work_time = request.POST['work_time']
+        work.save()
+        return redirect('main:WorkInquire')
+    return render(request, 'Main/Human/human_work_save.html',{'work':work})
+
+#근무삭제
+def WorkDelete(request, pk):
+    work = Work.objects.get(pk=pk)
+    if request.method == 'POST':
+       work.work_isdelete = True
+       work.save()
+       return redirect('main:WorkInquire')
+    return render(request, 'Main/Human/human_work_delete.html', {'work':work})
+
+#급여등록
+def PayEnrollment(request):
+    if request.method == 'POST':
+        emp = Employee.objects.get(employee_name=request.POST['employee_name'])
+        Pay.objects.create(
+        employee = emp,
+        work_pay = request.POST['work_pay'],
+        other_pay = request.POST['other_pay'],
+        whole_pay = request.POST['whole_pay'],
+        day_pay = request.POST['day_pay']
+        )
+        return redirect('main:PayInquire')
+    return render(request, 'Main/Human/human_pay_enrollment.html')
+
+#급여조회
+def PayInquire(request):
+    pay = Pay.objects.all()
+    return render(request, 'Main/Human/human_pay_inquire.html', {'pay':pay})
+
+#급여변경
+def PaySave(request, pk):
+    pay = Pay.objects.get(pk=pk)
+    if request.method == 'POST':
+        pay.work_pay = request.POST['work_pay']
+        pay.other_pay = request.POST['other_pay']
+        pay.whole_pay = request.POST['whole_pay']
+        pay.day_pay = request.POST['day_pay']
+        pay.save()
+        return redirect('main:PayInquire')
+    return render(request, 'Main/Human/human_pay_save.html',{'pay': pay})
+
+#급여삭제
+def PayDelete(request, pk):
+    pay = Pay.objects.get(pk=pk)
+    if request.method == 'POST':
+       pay.pay_isdelete = True
+       pay.save()
+       return redirect('main:PayInquire')
+    return render(request, 'Main/Human/human_pay_delete.html', {'pay':pay})
+
+#채용등록
+def HireEnrollment(request):
+    if request.method == 'POST':
+        restaurant_name = Restaurant.objects.get(restaurant_name=request.POST.get('restaurant_name', False))
+        user_name = User.objects.get(name=request.POST['name'])
+        Hire.objects.create(
+        restaurant = restaurant_name,
+        user = user_name,
+        hire_title = request.POST['hire_title'],
+        hire_content = request.POST['hire_content']
+        )
+        return redirect('main:HireInquire')
+    return render(request, 'Main/Human/human_hire_enrollment.html')
+
+#채용조회
+def HireInquire(request):
+    resume = Resume.objects.all()
+    return render(request, 'Main/Human/human_hire_inquire.html', {'resume':resume})
+
+#채용세부조회
+def HireDetail(request, pk):
+    resume = Resume.objects.get(pk=pk)
+    return render(request, 'Main/Human/human_hire_detail.html', {'resume':resume})
+
+#채용메인
+def HireMian(request):
+    hire = Hire.objects.all()
+    return render(request, 'Main/Human/hire_main.html', {'hire':hire})
+
+#이력서 등록
+def HireSign(request, pk):
+    hire = Hire.objects.get(pk=pk)
+    if request.method == 'POST':
+        restaurant_name = Restaurant.objects.get(restaurant_name=request.POST.get('restaurant_name', False))
+        Resume.objects.create(
+        restaurant = restaurant_name,
+        apply_name = request.POST['apply_name'],
+        apply_phone = request.POST['apply_phone'],
+        apply_email = request.POST['apply_email'],
+        apply_address = request.POST['apply_address'],
+        apply_academic = request.POST['apply_academic'],
+        apply_career = request.POST['apply_career'],
+        apply_motive = request.POST['apply_motive']
+        )
+        return redirect('main:HireMain')
+    return render(request, 'Main/Human/hire_main_sign.html', {'hire':hire})
+>>>>>>> 0d253f000eaf8e13d2e965ebb6ce51e7a3813f5f

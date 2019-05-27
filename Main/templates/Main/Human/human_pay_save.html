@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<div class="container">
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<br>
+<h2>급여 변경</h2>
+<div class="card">
+<form action="{% url 'main:PaySave' pay.pk %}" method="POST">
+{% csrf_token %}
+<table class="table table-hover">
+    <tr>
+        <th>근무자명</th>
+        <td><input type="text" id="employee_name" name="employee_name" style="background-color:lightgray;" class="form-control mb-4" value="{{ pay.employee.employee_name }}" readonly></td>
+    </tr>
+    <tr>
+        <th>정기수당</th>
+        <td><input type="text" id="work_pay" onkeyup='call()' name="work_pay" class="form-control mb-4" value="{{ pay.work_pay }}"></td>
+    </tr>
+    <tr>
+        <th>특별수당</th>
+        <td><input type="text" id="other_pay" onkeyup='call()' name="other_pay" class="form-control mb-4" value="{{ pay.other_pay }}"></td>
+    </tr>
+    <tr>
+        <th>총 수당</th>
+        <td><input type="text" id="whole_pay" name="whole_pay" class="form-control mb-4" value="{{ pay.whole_pay }}"></td>
+    </tr>
+    <tr>
+        <th>지급일</th>
+        <td><input type="date" id="day_pay" name="day_pay" class="form-control mb-4" value="{{ pay.day_pay }}"></td>
+    </tr>
+    <th><input type="submit" onclick="button1_click();" class="btn btn-outline-primary btn-sm m-0 waves-effect" value="등록"></a></th>
+    </tr>
+</table>
+</form></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+<script>
+    function button1_click() {
+      alert("변경이 성공적으로 완료되었습니다");
+    }
+    function call()
+    {
+     if(document.getElementById("work_pay").value && document.getElementById("other_pay").value){
+      document.getElementById('whole_pay').value =parseInt(document.getElementById('work_pay').value) + parseInt(document.getElementById('other_pay').value);
+     }
+    }
+</script>
+    
+<style>
+    table {
+        float: left;
+        border-collapse: collapse;
+        text-align: center;
+    }
+                  
+    th {
+        font-weight: 100;
+        padding: 3px;
+        text-align: center;
+    }
+    
+    td {
+        padding: 3px;
+        text-align: center;
+    }
+
+    input {
+        text-align: center;
+    }
+</style>
