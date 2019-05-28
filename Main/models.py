@@ -53,6 +53,7 @@ class Order(models.Model):
     o_target = models.CharField(max_length=30, verbose_name="거래처", null=True)
     o_note = models.CharField(max_length=50, verbose_name="비고", null=True)
     o_status = models.BooleanField(verbose_name='상태', default=False)
+    o_isAcitve = models.BooleanField(verbose_name="활성화", default=True)
 
     def save(self, *args, **kwargs):
         try:
@@ -60,20 +61,26 @@ class Order(models.Model):
             changed = ""
             for field in obj._meta.fields:
                 if getattr(obj, field.name, None) != getattr(self, field.name, None):
+                    if field.name == 'o_expense':
+                        from .models import Spending
+                        s_obj = Spending.objects.get(s_primary_key='{0}{1}'.format('Order', self.pk))
+                        s_obj.s_expense = self.o_expense
+                        s_obj.save(update_fields=['s_expense',])
                     changed += '{0}의 {1}의 값이 {2}->{3}로 변경,  '.format(self.o_name, field.verbose_name,\
                          getattr(obj, field.name, None), getattr(self, field.name, None))
-            Stocklog(sl_log=changed).save()
+            Stocklog(sl_log=changed).save()   
+            super(Order, self).save(*args, **kwargs)
         except Order.DoesNotExist:
-            Stocklog(sl_log='발주 목록 {0} 생성'.format(self.o_name), sl_category="발주").save()
-
-            #if self.o_expense != 0:
-            #    from .models import Spending
-            #    Spending.objects.create(
-            #        s_detail = '{0} 발주 {1}개'.format(self.o_name, self.o_count),
-            #        s_expense = self.o_expense      
-            #    )
-
-        super(Order, self).save(*args, **kwargs)
+            Stocklog(sl_log='발주 목록 {0} 생성'.format(self.o_name), sl_category="발주").save() 
+            super(Order, self).save(*args, **kwargs)
+            if self.o_expense != 0:
+    
+                from .models import Spending
+                Spending.objects.create(
+                    s_primary_key = '{0}{1}'.format('Order', self.id),
+                    s_detail = '{0} 발주 {1}개'.format(self.o_name, self.o_count),
+                    s_expense = self.o_expense      
+                )
     
     def delete(self, *args, **kwargs):
         Stocklog(sl_log='발주 목록 {0} 삭제'.format(self.o_name), sl_category="발주").save()
@@ -153,9 +160,13 @@ class Spending(models.Model):
     class Meta:
         verbose_name = '지출'
         verbose_name_plural = '지출'
+    # 상대 모델명 +인스턴스의 pk 값 
+    # 예로, 발주 등록으로 인해 지출 발생 시 Order01
+    s_primary_key = models.CharField(max_length=30, unique=True, null=True)
     s_spending_date = models.DateTimeField(auto_now_add=True)
     s_detail = models.CharField(max_length=100, default="")
     s_expense = models.IntegerField(default=0)
+
 
 #식당
 class Restaurant(models.Model):

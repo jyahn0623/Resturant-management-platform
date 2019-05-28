@@ -96,7 +96,6 @@ class StockDelete(DeleteView):
 
 # 이력 조회
 def getStockHistory(request, page):
-    print('request가 들어오냐?')
     bar_size = 5
     offset = 10
     page = int(page)
@@ -139,7 +138,7 @@ def addOrders(request):
 # 발주 조회
 def readOrders(request):
     try:
-        Orders = Order.objects.all()
+        Orders = Order.objects.filter(o_isAcitve=True)
     except Exception as e:
         Orders = None
 
@@ -281,7 +280,11 @@ class ProfitSearch(View):
 class SpendingMain(View):
     def get(self, request, *args, **kwargs):
         datas = Spending.objects.all().order_by('-s_spending_date')
-        return render(request, 'Main/Profit/Spending_main.html', {'spending' : datas})
+        amount = datas.aggregate(amount=Sum('s_expense'))
+        return render(request, 'Main/Profit/Spending_main.html', {
+            'spending' : datas, 
+            'amount' : amount
+        })
 
 class SpendingSearch(View):
     def post(self, request, *args, **kwargs):
@@ -292,10 +295,14 @@ class SpendingSearch(View):
             pass
         elif end_date == "":
             datas = Spending.objects.filter(s_spending_date__year=start_date[:4], \
-                s_spending_date__month=start_date[5:7], s_spending_date__day=start_date[8:10] ).order_by('-s_sending_date')
+                s_spending_date__month=start_date[5:7], s_spending_date__day=start_date[8:10] ).order_by('-s_spending_date')
         else:
-            datas = Spending.objects.filter(s_spending_date__gte=start_date, s_spending_date__lte=end_date).order_by('-s_sending_date')
-        return render(request, 'Main/Profit/Spending_main.html', {'spending' : datas, })
+            datas = Spending.objects.filter(s_spending_date__gte=start_date, s_spending_date__lte=end_date).order_by('-s_spending_date')
+        amount = datas.aggregate(amount=Sum('s_expense'))
+        return render(request, 'Main/Profit/Spending_main.html', {
+                'spending' : datas,
+                'amount' : amount
+            })
 
 ### REST API ####
 class MenuApi(View):
@@ -318,10 +325,18 @@ class MenuRestApi(viewsets.ModelViewSet):
    def perform_create(self, serializer):
        print(self)
 
-class OrderApi(APIView):
+from django.views.decorators.csrf import csrf_exempt
+class OrderApi(View):
+    @csrf_exempt
     def post(self, request, *args, **kwargs):
-        serializer = OrderCreateSerializers()
-        print(request)
+        print(request.POST.keys(), request.GET.keys(), 'hi', request.content_params)
+        return HttpResponse('hello')
+
+    def get(self, request, *args, **kwargs):
+        print(request.META.keys(), request.GET.keys(), 'hello')
+        for menu in request.GET.keys():
+            print(request.GET.get(menu))
+        return HttpResponse('Success Request')
         
 
 

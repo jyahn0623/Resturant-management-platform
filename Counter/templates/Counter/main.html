@@ -7,19 +7,20 @@
 </head>
 <body>
 <div class="container">
+    <h2>카운터</h2> <h3>현재 시간: <span id="timer"></span></h3>
     <div class="row">
 
         <div class="col-md-3">
-            <button class="btn btn-primary" data-toggle="modal" data-target=".jy-modal" onclick="test(1);">1번 테이블</button>
+            <button class="btn btn-primary w-100" data-toggle="modal" data-target=".jy-modal" onclick="test(1);">1번 테이블</button>
         </div>
         <div class="col-md-3">
-            <button class="btn btn-primary" data-toggle="modal" data-target=".jy-modal" onclick="test(2);">2번 테이블</button>
+            <button class="btn btn-primary w-100" data-toggle="modal" data-target=".jy-modal" onclick="test(2);">2번 테이블</button>
         </div>
         <div class="col-md-3">
-            <button class="btn btn-primary" data-toggle="modal" data-target=".jy-modal" onclick="test(3);">3번 테이블</button>
+            <button class="btn btn-primary w-100" data-toggle="modal" data-target=".jy-modal" onclick="test(3);">3번 테이블</button>
         </div>
         <div class="col-md-3">
-            <button class="btn btn-primary" data-toggle="modal" data-target=".jy-modal" onclick="test(4);">4번 테이블</button>
+            <button class="btn btn-primary w-100" data-toggle="modal" data-target=".jy-modal" onclick="test(4);">4번 테이블</button>
         </div>
     </div>
 </div>
@@ -34,7 +35,16 @@
   </div>
 </div>
 
-<script>    
+<script>
+    $(document).ready(function(){
+        var time = new Date();
+        $("span#timer").html(time);
+    })
+    setInterval(function(){
+        var time = new Date();
+        $("span#timer").html(time);
+    }, 1000)
+
     function test(tb_no)
     {   
         var url = "/Counter/OrderSheet/" +tb_no+"/";

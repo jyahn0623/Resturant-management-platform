@@ -21,6 +21,13 @@
                 </div>
             </div>
         </div>
+          <div class="row">
+            <div class='col-md-12'>
+                <div class='alert alert-warning'>
+                    기간 조회 시 왼쪽에만 입력하여 조회하면 해당 일자만 조회할 수 있습니다.
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <table class='table table-hover table-bordered' id="profit-table">
@@ -38,6 +45,10 @@
                             <td id="amount{{forloop.counter0}}">{{data.s_expense}}</td>
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <td colspan='2'>총액</td>
+                            <td>{{amount.amount}}</td>
+                        </tr>
                     {% else %}
                         <td colspan="3" class="text-center">지출 내역이 없습니다.</td>
                     {% endif %}
@@ -45,11 +56,13 @@
                 </table>
             </div>
         </div>    
+        <!--
         <div class="row">
             <div class="col-md-12">
                 총계 <span id="amount"></span>
             </div>
         </div>
+        -->
     </div>
     <script>
     $(document).ready(function(){

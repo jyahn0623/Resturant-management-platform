@@ -10,15 +10,19 @@
         <th>주문 시간</th>
     </thead>
     <tbody>
-        {% for data in datas %}
-            <tr>
-                <td>{{data.to_order_sheet.os_table_no}}</td>
-                <td>{{data.to_menu.m_name}}</td>
-                <td>{{data.to_count}}</td>
-                <td>{{data.to_status}}</td>
-                <td>{{data.to_order_sheet.os_order_date}}</td>
-            </tr>
-        {% endfor %}
+        {% if datas %}
+            {% for data in datas %}
+                <tr>
+                    <td>{{data.to_order_sheet.os_table_no}}</td>
+                    <td>{{data.to_menu.m_name}}</td>
+                    <td>{{data.to_count}}</td>
+                    <td>{{data.to_status}}</td>
+                    <td>{{data.to_order_sheet.os_order_date}}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <td class="text-center" colspan='5'>이전 주문 내역이 없습니다.</td>
+        {% endif %}
     </tbody>
     </table>
 

@@ -1,6 +1,7 @@
 {% extends 'Main/Sell/main.html' %}
 {% load static %}
 {% block content %}
+
 <button type="button" class="btn btn-info mb-2" onclick="window.location='/Sell/Menu/Register/'">메뉴 등록</button>
 <table class="table table-bordered table-hover text-center">
     <thead class="thead thead-light"> 
@@ -14,15 +15,15 @@
     {% if menus %}
         {% for menu in menus %}
             <tr>    
-                <td>{{menu.m_name}}</td>
-                <td>{{menu.m_price}}원</td>
-                <td>{{menu.m_explain}}</td>
+                <td style="vertical-align : middle;">{{menu.m_name}}</td>
+                <td style="vertical-align : middle;">{{menu.m_price}}원</td>
+                <td style="vertical-align : middle;">{{menu.m_explain}}</td>
                 {% if menu.m_pic %}
-                    <td><img src={{menu.m_pic.url}} width="150px" height="150px"></td>  
+                    <td style="vertical-align : middle;"><img src={{menu.m_pic.url}} width="150px" height="150px"></td>  
                 {% else %}
                     <td>사진 등록이 필요합니다.</td>
                 {% endif %}
-                <td>
+                <td style="vertical-align : middle;">
                     <form action="{% url 'main:sell_update' menu.pk %}" method="GET" style="display : inline">  
                         <input class="btn btn-info" type="submit" value="수정">
                     </form>
@@ -30,7 +31,7 @@
                     {% csrf_token %}
                         <input class="btn btn-danger" type="submit" value="삭제">
                     </form>
-                </td>
+                </td style="vertical-align : middle;">
             </tr>
         {% endfor %}
     {% else %}  

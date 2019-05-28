@@ -15,7 +15,7 @@ class OrderSheetInfo(View):
         try:
             os = Order_sheet.objects.get(os_table_no=kwargs.get('id'), os_status=True)
             to = Table_order.objects.filter(to_order_sheet=os, to_isActive=True).exclude(to_status='취소')
-            print(os, to)
+        
             datas['table_info'] = os
             datas['menu_info'] = to
             datas['amount'] = getMenuMoneySum(to)
@@ -32,6 +32,7 @@ def finishedPayment(request):
         sheet_no = request.POST.get('sheet_no')
         try:
             os= Order_sheet.objects.get(id=sheet_no)
+            to = Table_order.objects.filter(to_order_sheet=os, to_isActive=True).exclude(to_status='취소').update(to_isActive=False)
             Profit.objects.create(
                 p_detail='음식 판매',
                 p_amount=amount,

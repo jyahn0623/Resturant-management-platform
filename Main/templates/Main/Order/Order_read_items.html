@@ -6,6 +6,7 @@
     <thead class="thead thead-light">
         <th>품명</th>
         <th>수량</th>
+        <th>거래처</th>
         <th>주문일자</th>
         <th>상태</th>
         <th>삭제 및 수정</th>
@@ -16,6 +17,7 @@
         <tr>
             <td>{{order.o_name}}</td>
             <td>{{order.o_count}}{{order.o_unit}}</td>
+            <td>{{order.o_target}}</td>
             <td>{{order.o_order_at}}</td> 
             {% if order.o_status == True %}
                 <td>반입</td>
@@ -35,7 +37,7 @@
         </tr>
         {% endfor %}
     {% else %}
-        <td colspan="5">발주 항목이 없습니다.</td>
+        <td colspan="6">발주 항목이 없습니다.</td>
     {% endif %}
     </tbody>
     </table>

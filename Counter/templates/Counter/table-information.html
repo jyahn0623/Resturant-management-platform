@@ -1,5 +1,6 @@
 
 <table class='table table-hover'>
+    <h2>{{table.table_info.os_table_no}}번 테이블</h2>
     <thead>
         <th>메뉴</th>
         <th>개수</th>
@@ -30,7 +31,13 @@
 </div>
 
 <script>
+var isHaveData = "{{table.table_info}}";
+console.log(isHaveData);
 function modifiedPage(){
+    if (isHaveData==""){
+        alert("데이터 정보가 없습니다.");
+        return 0;
+    }
     var pk = '{{table.table_info.pk}}';
     window.open("/Counter/OrderSheet/" +pk +"/update",  '_blank', "weight=300, height=300");
     
