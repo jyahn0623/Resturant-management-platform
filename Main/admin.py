@@ -22,10 +22,8 @@ admin.site.register(Stocklog)
 admin.site.register(Menu)
 admin.site.register(Table_order)
 admin.site.register(Order_sheet)
-<<<<<<< HEAD
 admin.site.register(Profit)
 admin.site.register(Spending)
-=======
 admin.site.register(Restaurant)
 admin.site.register(User, UserView)
 admin.site.register(Employee, EmployeeView)
@@ -35,4 +33,3 @@ admin.site.register(Work)
 admin.site.register(Pay)
 admin.site.register(Hire)
 admin.site.register(Resume)
->>>>>>> 0d253f000eaf8e13d2e965ebb6ce51e7a3813f5f

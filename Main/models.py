@@ -49,6 +49,7 @@ class Order(models.Model):
     o_count = models.FloatField(verbose_name="수량")
     o_unit = models.CharField(max_length=10, verbose_name='단위', blank=True, null=True)
     o_order_at = models.DateTimeField(verbose_name='주문일자')
+    o_expense = models.IntegerField(verbose_name='비용', default=0)
     o_target = models.CharField(max_length=30, verbose_name="거래처", null=True)
     o_note = models.CharField(max_length=50, verbose_name="비고", null=True)
     o_status = models.BooleanField(verbose_name='상태', default=False)
@@ -64,6 +65,14 @@ class Order(models.Model):
             Stocklog(sl_log=changed).save()
         except Order.DoesNotExist:
             Stocklog(sl_log='발주 목록 {0} 생성'.format(self.o_name), sl_category="발주").save()
+
+            #if self.o_expense != 0:
+            #    from .models import Spending
+            #    Spending.objects.create(
+            #        s_detail = '{0} 발주 {1}개'.format(self.o_name, self.o_count),
+            #        s_expense = self.o_expense      
+            #    )
+
         super(Order, self).save(*args, **kwargs)
     
     def delete(self, *args, **kwargs):
@@ -90,7 +99,6 @@ class Menu(models.Model):
     class Meta:
         verbose_name = '메뉴'
         verbose_name_plural = '메뉴'
-
     m_name = models.CharField(max_length=20, verbose_name="메뉴 이름")
     m_price = models.PositiveIntegerField(verbose_name="가격")
     m_explain = models.CharField(max_length=100, verbose_name="설명")
@@ -139,7 +147,6 @@ class Profit(models.Model):
     p_profit_date = models.DateTimeField(auto_now_add=True)
     p_detail = models.CharField(max_length=100)
     p_amount = models.IntegerField(default=0)
-<<<<<<< HEAD
     p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE, null=True)
     
 class Spending(models.Model):
@@ -149,10 +156,6 @@ class Spending(models.Model):
     s_spending_date = models.DateTimeField(auto_now_add=True)
     s_detail = models.CharField(max_length=100, default="")
     s_expense = models.IntegerField(default=0)
-    
-=======
-    p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE)
-    
 
 #식당
 class Restaurant(models.Model):
@@ -269,4 +272,3 @@ class Resume(models.Model):
 
     def __str__(self):
         return self.apply_name
->>>>>>> 0d253f000eaf8e13d2e965ebb6ce51e7a3813f5f

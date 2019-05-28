@@ -41,7 +41,6 @@
     var ws = new WebSocket('ws://'+ location.host +'/Order/State/');
     ws.onopen = function(e){
         console.log(e);
-        ws.send('sex');
     }
     ws.onerror = function(e){
         console.log(e);

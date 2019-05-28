@@ -14,6 +14,7 @@
                                     <th></th>
                                     <th></th>
                                 </tr>
+                                <!--
                                 <tr>
                                     <th>회사명*</th>
                                     <td><input type="text" id="restaurant_name" name="restaurant_name" class="form-control mb-4" placeholder="사명을 입력해주세요"></td>
@@ -24,6 +25,29 @@
                                     <td><input type="text" id="name" name="name" class="form-control mb-4" placeholder="사용자의 이름을 입력해주세요"></td>
                                     <td></td>
                                 </tr>
+                                -->
+                                  <tr>
+                                    <th>회사명*</th>
+                                    <td><select name ="restaurant_name" id="restaurant_name">
+                                      <option value ="-">-</option>
+                                      {% for restaurant in restaurant %}
+                                      <option value = {{ restaurant.restaurant_name }}>{{ restaurant.restaurant_name }}</option>
+                                      {% endfor %}
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <th>등록자명*</th>
+                                    <td><select name ="name" id="name">
+                                        <option value ="-">-</option>
+                                        {% for user in user %}
+                                        <option value = {{ user.name }}>{{ user.name }}</option>
+                                        {% endfor %}
+
+                                        </select></td>
+                                    </tr>
+                                <tr>
+
+
                                 <tr>
                                     <th>제목</th>
                                     <td><input type="text" id="hire_title" name="hire_title" class="form-control mb-4" placeholder="제목을 입력해주세요"></td>

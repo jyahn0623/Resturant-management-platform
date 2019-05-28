@@ -60,6 +60,8 @@ urlpatterns = [
     path('Spending/Search/', SpendingSearch.as_view(), name="spending-search"),
 
     # Api
-    path('Menu/list/', MenuApi.as_view(), name='menu-list')
+    path('Menu/list/', MenuApi.as_view(), name='menu-list'),
+    path('Menu/list2/', MenuRestApi.as_view({'get' : 'list', }), name='menu-list2'),
+    path('Order/create/', OrderApi.as_view(), name='menu-order')
 ]
 

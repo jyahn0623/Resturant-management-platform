@@ -119,6 +119,7 @@ def addOrders(request):
         o_unit = request.POST.get('unit')
         o_target = request.POST.get('target')
         o_note = request.POST.get('note')
+        o_expense = request.POST.get('expense', 0)
         
         Order.objects.create(
             o_name = o_name,
@@ -127,6 +128,7 @@ def addOrders(request):
             o_unit = o_unit,
             o_target = o_target,
             o_note = o_note,
+            o_expense=o_expense
         )
 
         return redirect('/Order/Inquiry/', {
@@ -256,7 +258,6 @@ class orderCancel(View):
 # 수익 관리
 class ProfitMain(View):
     def get(self, request, *args, **kwargs):
-<<<<<<< HEAD
         profits = Profit.objects.all().order_by('-p_profit_date')
         amount = profits.aggregate(amount=Sum('p_amount'))
         return render(request, 'Main/Profit/main.html', {'profits' : profits, 'amount' : amount['amount']})
@@ -304,9 +305,25 @@ class MenuApi(View):
         datas_to_JSON = serializers.serialize('json', datas)
         print(datas_to_JSON)
         return HttpResponse(datas_to_JSON, content_type="json/application")
-=======
         profits = Profit.objects.all()
         return render(request, 'Main/Profit/main.html', {'profits' : profits, })
+
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from Main.seriallizers import *
+class MenuRestApi(viewsets.ModelViewSet):
+   queryset = Menu.objects.all()
+   serializer_class = MenuSerializers
+
+   def perform_create(self, serializer):
+       print(self)
+
+class OrderApi(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = OrderCreateSerializers()
+        print(request)
+        
+
 
 
 # -------------- 인사 부분 ------------------#
@@ -484,17 +501,20 @@ def PayDelete(request, pk):
 
 #채용등록
 def HireEnrollment(request):
+    restaurant = Restaurant.objects.all()
+    user = User.objects.all()
+
     if request.method == 'POST':
         restaurant_name = Restaurant.objects.get(restaurant_name=request.POST.get('restaurant_name', False))
         user_name = User.objects.get(name=request.POST['name'])
         Hire.objects.create(
-        restaurant = restaurant_name,
-        user = user_name,
-        hire_title = request.POST['hire_title'],
-        hire_content = request.POST['hire_content']
+            restaurant = restaurant_name,
+            user = user_name,
+            hire_title = request.POST['hire_title'],
+            hire_content = request.POST['hire_content']
         )
         return redirect('main:HireInquire')
-    return render(request, 'Main/Human/human_hire_enrollment.html')
+    return render(request, 'Main/Human/human_hire_enrollment.html', {'restaurant':restaurant,'user':user})
 
 #채용조회
 def HireInquire(request):
@@ -528,4 +548,3 @@ def HireSign(request, pk):
         )
         return redirect('main:HireMain')
     return render(request, 'Main/Human/hire_main_sign.html', {'hire':hire})
->>>>>>> 0d253f000eaf8e13d2e965ebb6ce51e7a3813f5f
