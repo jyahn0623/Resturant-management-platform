@@ -305,19 +305,24 @@ class SpendingSearch(View):
             })
 
 ### REST API ####
-class MenuApi(View):
-    def get(self, request, *args, **kwargs):
-        datas = Menu.objects.all()
-        print(datas)
-        datas_to_JSON = serializers.serialize('json', datas)
-        print(datas_to_JSON)
-        return HttpResponse(datas_to_JSON, content_type="json/application")
-        profits = Profit.objects.all()
-        return render(request, 'Main/Profit/main.html', {'profits' : profits, })
-
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from Main.seriallizers import *
+from Main.model_seriallizers import *
+
+class MenuApi(View):
+    def get(self, request, *args, **kwargs):
+        from django.core import serializers as sr
+        context = {}
+        datas = Order_sheet.objects.filter(os_status=True)
+        if datas:
+            for data in datas:
+                to = Table_order.objects.filter(to_order_sheet=data)
+                context[data.os_table_no] = sr.serialize("json",  to, fields=('to_menu__m_name', 'to_menu__m_price', 'to_count'), ensure_ascii=False)
+            print(context)
+            return HttpResponse(json.dumps(context))
+        else:
+            return HttpResponse("No Datas")
+        
 class MenuRestApi(viewsets.ModelViewSet):
    queryset = Menu.objects.all()
    serializer_class = MenuSerializers
@@ -327,15 +332,37 @@ class MenuRestApi(viewsets.ModelViewSet):
 
 from django.views.decorators.csrf import csrf_exempt
 class OrderApi(View):
-    @csrf_exempt
-    def post(self, request, *args, **kwargs):
-        print(request.POST.keys(), request.GET.keys(), 'hi', request.content_params)
-        return HttpResponse('hello')
-
     def get(self, request, *args, **kwargs):
-        print(request.META.keys(), request.GET.keys(), 'hello')
-        for menu in request.GET.keys():
-            print(request.GET.get(menu))
+        table_no = request.GET['table_num']
+        dict_to_list = list(request.GET.keys())
+        dict_to_list.pop(0)
+        
+        # 이미 주문된 건수가 있으면 에러
+        try:
+            Order_sheet.objects.get(os_status=True, os_table_no=table_no)
+            return HttpResponse("이미 주문된 접수가 있습니다.")
+        except Exception as e:
+            pass
+        
+        os = Order_sheet.objects.create(
+            os_table_no=table_no,
+            os_amount=0
+        )
+        for i in range(0, len(dict_to_list), 2):
+            name = request.GET[dict_to_list[i]]
+            count = request.GET[dict_to_list[i+1]]
+            
+            Table_order.objects.create(
+                to_menu=Menu.objects.get(m_name=name),
+                to_count=count,
+                to_status="주문",
+                to_order_sheet=os
+            )
+     
+
+        
+        
+                
         return HttpResponse('Success Request')
         
 
