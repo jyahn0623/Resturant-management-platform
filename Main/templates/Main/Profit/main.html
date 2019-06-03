@@ -11,7 +11,9 @@
                 <div class="btn-group mb-2" role="group">
                     <button class="btn btn-secondary" onclick="window.location.href='/Profit/'">전체 조회</button>
                     <button class="btn btn-secondary" onclick="showPeriodDiv();">기간 조회</button>
+                    <button class="btn btn-info" onclick="window.location.href='/Profit/add/'">수익 등록</button>
                 </div>
+             
                   <div class="period-search mb-2">
                     <form action="{% url 'main:profit-search' %}" method="POST">
                     {% csrf_token %} 

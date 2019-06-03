@@ -1,0 +1,8 @@
+{% extends 'Main/Profit/Main.html' %}
+{% block content %}
+<form method="POST" action="{% url 'main:profit-add' %}">
+{% csrf_token %}    
+    {{form.as_p}}
+    <input type="submit" class='btn btn-success'>
+</form>
+{% endblock %}

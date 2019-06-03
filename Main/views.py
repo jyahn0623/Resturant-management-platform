@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, Http404, render_to_response, redirect
 from .models import *
 from django.forms.models import modelform_factory
-from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic import ListView
 from django.views import View
 import json
@@ -276,6 +276,14 @@ class ProfitSearch(View):
         amount = datas.aggregate(amount=Sum('p_amount'))
         return render(request, 'Main/Profit/main.html', {'profits' : datas, 'amount' : amount['amount']})
 
+class ProfitAdd(CreateView):
+    model = Profit
+    fields = ['p_detail', 'p_amount']
+    template_name = 'Main/Profit/Profit_add.html'
+    success_url = '/Profit/'
+    
+    
+
 # 지출 관리
 class SpendingMain(View):
     def get(self, request, *args, **kwargs):
@@ -285,6 +293,13 @@ class SpendingMain(View):
             'spending' : datas, 
             'amount' : amount
         })
+
+class SpendingAdd(CreateView):
+    model = Spending
+    fields = ['s_detail', 's_expense']
+    template_name = 'Main/Profit/Spending_add.html'
+    success_url = '/Spending/'
+
 
 class SpendingSearch(View):
     def post(self, request, *args, **kwargs):
@@ -303,6 +318,41 @@ class SpendingSearch(View):
                 'spending' : datas,
                 'amount' : amount
             })
+class Analysis(View):
+    def get(self, request, *args, **kwargs):
+        # ---- 매출 분석 ---- #
+        p_datas = Profit.objects.all()
+        s_datas = Spending.objects.all()
+        p = p_datas.values('p_profit_date__date').annotate(p_amount=Sum('p_amount'))
+        s = s_datas.values('s_spending_date__date').annotate(s_amount=Sum('s_expense'))
+    
+        profit_spending_datas = {}
+        date_check = {}
+        for data in p:
+            if not data['p_profit_date__date'] in date_check:
+                date_check[data['p_profit_date__date'].isoformat()] = True
+        for data in s:
+            if not data['s_spending_date__date'] in date_check:
+                date_check[data['s_spending_date__date'].isoformat()] = True
+
+        for date in date_check:
+            profit_spending_datas[date] = {}
+            profit_spending_datas[date]['p_amount'] = Profit.objects.filter(p_profit_date__date=date).values('p_amount').aggregate(p=Sum('p_amount'))['p']
+            profit_spending_datas[date]['s_amount'] = Spending.objects.filter(s_spending_date__date=date).values('s_expense').aggregate(p=Sum('s_expense'))['p']
+        
+        # ---- 메뉴별 분석 ---- #
+        #datas2 = Table_order.objects.filter(to_status='완료').values('to_menu__m_name').annotate(cnt=Count('to_menu'))
+        datas3 = { data.m_name : 0 for data in Menu.objects.all() }
+        
+        for data in Table_order.objects.filter(to_status='완료'):
+            datas3[data.to_menu.m_name] += (1 * data.to_count)
+
+        return render(request, 'Main/Profit/Analysis.html', {
+            'datas' : profit_spending_datas, 
+            'datas2' : datas3,
+            'datas_json' : json.dumps(profit_spending_datas),
+            'datas2_json' : json.dumps(datas3)
+        })
 
 ### REST API ####
 from rest_framework import viewsets

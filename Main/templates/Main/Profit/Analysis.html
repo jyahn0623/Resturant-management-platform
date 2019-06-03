@@ -1,0 +1,95 @@
+{% extends 'Main/Profit/main.html' %}
+{% load Stock %}
+{% block content %}
+ <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <h3>전체 기간 매출 분석</h3>
+    <div id="line-graph"></div>
+    <table class='table table-bordered'>
+        <thead class="thead thead-light">
+            <th>일자</th>
+            <th>수익</th>
+            <th>지출</th>
+            <th>매출</th>
+        </thead>
+        <tbody>
+            {% for date, val in datas.items %} 
+            <tr>
+                <td>{{date}}</td>
+                <td>{{val.p_amount|default_if_none:'0'}}원</td>
+                <td>{{val.s_amount|default_if_none:'0'}}원</td>
+                <td id="amount">{% calcWithProfitAndSpending val.p_amount val.s_amount %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    <table>
+
+    <h3 class="mt-5">전체 기간 음식별 판매 분석</h3>
+    <div id="donut-graph"></div>
+    <table class='table table-bordered'>
+        <thead class="thead thead-light">
+            <th>메뉴명</th>
+            <th>판매 개수</th>
+        </thead>
+        <tbody>
+            {% for data, val in datas2.items %} 
+            <tr>
+                <td>{{data}}</td>
+                <td>{{val}}개</td>             
+            </tr>
+            {% endfor %}
+        </tbody>
+    <table>
+
+
+    <script>
+        $(document).ready(function(){
+            var items = document.querySelectorAll("td#amount");
+            
+            items.forEach(function(item){
+                if ($(item).html() < 0){
+                    $(item).css("color", "red");
+                }else{
+                    $(item).css("color", "blue");       
+                }
+            })
+
+            // 그래프
+            var datas = JSON.parse('{{datas_json|safe}}');
+            var preprocess = [];
+            for (var data in datas){
+                var tmp_datas = {};
+                tmp_datas['y'] = data;
+                tmp_datas['p_amount'] = datas[data]['p_amount'];
+                tmp_datas['s_amount'] = datas[data]['s_amount'];
+                preprocess.push(tmp_datas);
+            }
+            
+            Morris.Line({
+            element: 'line-graph',
+            data: preprocess,
+            lineColors : ['#0000ff', '#ff0000'],
+            hideHover : true,
+            xLabels : "day",
+            xkey: 'y',
+            ykeys: ['p_amount', 's_amount'],
+            labels: ['수익', '지출']
+            });
+
+            // 도넛
+            var datas2 = JSON.parse('{{datas2_json|safe}}');
+            var params = []
+            for (var menu in datas2){
+                var datas_to_dict = {'label' : menu, 'value' : datas2[menu] };
+                params.push(datas_to_dict);
+            }        
+            Morris.Donut({
+                element: 'donut-graph',
+                data: params
+            });
+
+        })
+    </script>
+{% endblock %}

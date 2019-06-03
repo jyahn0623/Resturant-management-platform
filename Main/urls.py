@@ -56,12 +56,16 @@ urlpatterns = [
     # 매출 관리
     path('Profit/', ProfitMain.as_view(), name="profit-main"),
     path('Profit/Search/', ProfitSearch.as_view(), name="profit-search"),
+    path('Profit/add/', ProfitAdd.as_view(), name="profit-add"),
+    path('Spending/add/', SpendingAdd.as_view(), name="spending-add"),
     path('Spending/', SpendingMain.as_view(), name="spending-main"),
     path('Spending/Search/', SpendingSearch.as_view(), name="spending-search"),
+    path('Analysis/', Analysis.as_view(), name="analysis"),
 
     # Api
     path('Menu/list/', MenuApi.as_view(), name='menu-list'),
     path('Menu/list2/', MenuRestApi.as_view({'get' : 'list', }), name='menu-list2'),
     path('Order/create/', OrderApi.as_view(), name='menu-order')
 ]
+
 

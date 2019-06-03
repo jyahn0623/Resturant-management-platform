@@ -151,9 +151,9 @@ class Profit(models.Model):
     class Meta:
         verbose_name = '수익'
         verbose_name_plural = '수익'
-    p_profit_date = models.DateTimeField(auto_now_add=True)
-    p_detail = models.CharField(max_length=100)
-    p_amount = models.IntegerField(default=0)
+    p_profit_date = models.DateTimeField(auto_now_add=True, verbose_name='수익 발생일')
+    p_detail = models.CharField(max_length=100, verbose_name='내용')
+    p_amount = models.IntegerField(default=0, verbose_name='총액')
     p_os = models.ForeignKey('Main.Order_sheet', on_delete=models.CASCADE, null=True)
     
 class Spending(models.Model):
@@ -164,8 +164,8 @@ class Spending(models.Model):
     # 예로, 발주 등록으로 인해 지출 발생 시 Order01
     s_primary_key = models.CharField(max_length=30, unique=True, null=True)
     s_spending_date = models.DateTimeField(auto_now_add=True)
-    s_detail = models.CharField(max_length=100, default="")
-    s_expense = models.IntegerField(default=0)
+    s_detail = models.CharField(max_length=100, default="", verbose_name='내용')
+    s_expense = models.IntegerField(default=0, verbose_name='지출액')
 
 
 #식당
